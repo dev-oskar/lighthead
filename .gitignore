@@ -30,3 +30,7 @@ dev-dist
 
 # Claude Code memory (session-local, not part of the project)
 .remember/
+
+# run-lighthead skill driver: local install + generated verification artifacts
+.claude/skills/*/screenshots/
+.claude/skills/*/package-lock.json

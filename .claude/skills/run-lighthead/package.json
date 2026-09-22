@@ -1,0 +1,9 @@
+{
+	"name": "run-lighthead-driver",
+	"private": true,
+	"type": "module",
+	"description": "Isolated tooling for the run-lighthead agent skill. Not part of the app; deliberately kept out of the project's own package.json/lockfile.",
+	"dependencies": {
+		"playwright": "^1.55.0"
+	}
+}
