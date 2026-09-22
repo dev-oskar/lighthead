@@ -14,6 +14,11 @@ export default defineConfig({
 			adapter: adapter()
 		}),
 		VitePWA({
+			// SvelteKit's app.html isn't the plain index.html vite-plugin-pwa expects,
+			// so its auto HTML injection (manifest link + SW registration script)
+			// silently no-ops. The manifest link is added by hand in app.html, and the
+			// service worker is registered by hand in +layout.svelte instead.
+			injectRegister: false,
 			registerType: 'autoUpdate',
 			includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
 			manifest: {
