@@ -1,0 +1,30 @@
+// Global styles and design tokens.
+// Component-level styles should live in each .svelte file's <style lang="scss"> block.
+
+:root {
+	--color-bg: #ffffff;
+	--color-text: #1a1a1a;
+	--color-primary: #2f9e44;
+	--color-primary-contrast: #ffffff;
+	--font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+	color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-bg: #121212;
+		--color-text: #f2f2f2;
+	}
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: var(--color-bg);
+	color: var(--color-text);
+	font-family: var(--font-family);
+}
