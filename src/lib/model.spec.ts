@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-	applyStash, breakProgress, clamp, dailyGrams, DEFAULT_SETTINGS, groupByDay, mgThc, nudge, periodRange, prefill, snapshot, totals,
+	applyStash, breakEnd, breakProgress, clamp, dailyGrams, DEFAULT_SETTINGS, groupByDay, mgThc, nudge, periodRange, prefill, snapshot, totals,
 	type Session, type Strain
 } from './model.ts';
 import { initials } from './photo.ts';
@@ -68,6 +68,12 @@ describe('break', () => {
 		const b = { id: 'b', start: at(2026, 10, 13, 9), lengthDays: 21, notes: [] };
 		expect(breakProgress(b, at(2026, 10, 21))).toMatchObject({ day: 9, daysLeft: 12, complete: false });
 		expect(breakProgress(b, at(2026, 11, 20))).toMatchObject({ day: 21, daysLeft: 0, complete: true });
+	});
+	it('ends at midnight after the last calendar day, even when started late and across DST', () => {
+		const b = { id: 'b', start: at(2026, 10, 20, 22), lengthDays: 7, notes: [] }; // DST ends 25 Oct in Europe
+		expect(breakProgress(b, at(2026, 10, 26, 23))).toMatchObject({ day: 7, complete: false });
+		expect(breakProgress(b, at(2026, 10, 27, 0) + 1)).toMatchObject({ complete: true });
+		expect(breakEnd(b)).toBe(at(2026, 10, 27, 0));
 	});
 });
 

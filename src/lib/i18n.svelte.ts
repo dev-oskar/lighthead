@@ -49,10 +49,16 @@ export function parseNumber(s: string): number | null {
 	return Number.isNaN(v) ? null : v;
 }
 
+/** Locale for formatting: the device's full tag (en-GB: 24h, Monday weeks) when its language is the app language. */
+export function region(): string {
+	const dev = typeof navigator === 'undefined' ? '' : navigator.language;
+	return dev.toLowerCase().split('-')[0] === i18n.locale ? dev : i18n.locale;
+}
+
 // Reactive in templates because they read i18n.locale.
 export const t = (key: string, vars?: Record<string, string | number>) => translate(i18n.locale, key, vars);
-export const num = (n: number, decimals?: number) => formatNumber(i18n.locale, n, decimals);
-export const pct = (n: number, decimals?: number) => formatPercent(i18n.locale, n, decimals);
-export const time = (ms: number) => new Intl.DateTimeFormat(i18n.locale, { hour: '2-digit', minute: '2-digit' }).format(ms);
+export const num = (n: number, decimals?: number) => formatNumber(region(), n, decimals);
+export const pct = (n: number, decimals?: number) => formatPercent(region(), n, decimals);
+export const time = (ms: number) => new Intl.DateTimeFormat(region(), { hour: '2-digit', minute: '2-digit' }).format(ms);
 export const date = (ms: number, opts: Intl.DateTimeFormatOptions = { weekday: 'long', day: 'numeric', month: 'long' }) =>
-	new Intl.DateTimeFormat(i18n.locale, opts).format(ms);
+	new Intl.DateTimeFormat(region(), opts).format(ms);

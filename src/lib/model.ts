@@ -187,14 +187,23 @@ export function dailyGrams(sessions: Session[], now: number, days = 7): number[]
 }
 
 /** Day N of a break (1-based, capped at length) and days left. */
+/** Midnight after the break's last calendar day (DST-safe: calendar arithmetic, not 24h steps). */
+export function breakEnd(b: Break): number {
+	const d = new Date(startOfDay(b.start));
+	d.setDate(d.getDate() + b.lengthDays);
+	return d.getTime();
+}
+
+/** Calendar days from a to b (DST-safe). */
+const daysBetween = (a: number, b: number) => Math.round((startOfDay(b) - startOfDay(a)) / DAY);
+
 export function breakProgress(b: Break, now: number) {
-	const end = b.start + b.lengthDays * DAY;
-	const day = Math.min(b.lengthDays, Math.floor((startOfDay(now) - startOfDay(b.start)) / DAY) + 1);
+	const end = breakEnd(b);
+	const day = Math.min(b.lengthDays, daysBetween(b.start, now) + 1);
 	return { day: Math.max(1, day), daysLeft: Math.max(0, b.lengthDays - day), end, complete: !b.endedAt && now >= end };
 }
 
-export const activeBreak = (breaks: Break[], now: number) =>
-	breaks.find((b) => !b.endedAt && now < b.start + b.lengthDays * DAY);
+export const activeBreak = (breaks: Break[], now: number) => breaks.find((b) => !b.endedAt && now < breakEnd(b));
 
 /** Sessions grouped by local day, newest day first. */
 export function groupByDay(sessions: Session[]): { day: number; sessions: Session[] }[] {

@@ -8,7 +8,7 @@ import { version } from '$app/env';
 import { immutable, assets } from '$app/manifest';
 
 const CACHE = `lighthead-${version}`;
-const SHELL = 'index.html'; // adapter-static fallback page
+const SHELL = ''; // the scope root serves the SPA shell (adapter-static fallback) on every host
 const url = (p: string) => new URL(p, self.registration.scope).href;
 const FILES = [...immutable, ...assets].map((f) => url(f.path)).concat(url(SHELL));
 
@@ -30,8 +30,9 @@ self.addEventListener('fetch', (e) => {
 	e.respondWith(
 		(async () => {
 			const cache = await caches.open(CACHE);
-			if (req.mode === 'navigate') return (await cache.match(url(SHELL))) ?? fetch(req);
-			return (await cache.match(req)) ?? fetch(req);
+			if (req.mode === 'navigate') return (await cache.match(url(SHELL), { ignoreVary: true })) ?? fetch(req);
+			// ignoreVary: hosts send 'Vary: Origin'; module scripts carry an Origin header the precache request did not.
+			return (await cache.match(req, { ignoreVary: true })) ?? fetch(req);
 		})()
 	);
 });

@@ -12,7 +12,10 @@ export default defineConfig({
 			},
 			// SPA: every route falls back to index.html; the service worker serves it offline.
 			// ponytail: index.html fallback suits Netlify/Cloudflare/any rewrite host; GitHub Pages needs '404.html' + paths.base.
-			adapter: adapter({ fallback: 'index.html' })
+			adapter: adapter({ fallback: 'index.html' }),
+			// The service worker serves one cached shell for every route, so its asset URLs must not be
+			// relative to the page (./_app on /strains/new would resolve to /strains/_app).
+			paths: { relative: false }
 		})
 	],
 	test: {
