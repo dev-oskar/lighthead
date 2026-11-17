@@ -1,2 +1,5 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import { t } from '#lib/i18n.svelte.ts';
+</script>
+
+<main class="lh-page"><h1 class="lh-title">{t('today')}</h1></main>

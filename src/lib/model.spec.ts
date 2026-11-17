@@ -65,7 +65,7 @@ describe('periods and totals', () => {
 
 describe('break', () => {
 	it('counts day N of total', () => {
-		const b = { id: 'b', start: at(2026, 10, 13, 9), lengthDays: 21 };
+		const b = { id: 'b', start: at(2026, 10, 13, 9), lengthDays: 21, notes: [] };
 		expect(breakProgress(b, at(2026, 10, 21))).toMatchObject({ day: 9, daysLeft: 12, complete: false });
 		expect(breakProgress(b, at(2026, 11, 20))).toMatchObject({ day: 21, daysLeft: 0, complete: true });
 	});

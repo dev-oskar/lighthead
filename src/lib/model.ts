@@ -50,6 +50,7 @@ export interface Break {
 	start: number;
 	lengthDays: number;
 	endedAt?: number;
+	notes: { at: number; text: string }[]; // "Notes on this break"
 }
 
 export interface Settings {
