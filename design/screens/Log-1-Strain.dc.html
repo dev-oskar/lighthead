@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Log session: strain</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 20px">
+    <x-import component-from-global-scope="LightHead.StepHeader" step="{{one}}" total="{{three}}" title="What did you have?"></x-import>
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+      <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; line-height: 20px; color: var(--ink-muted)">
+        <x-import component-from-global-scope="LightHead.Icon" name="clock" size="{{sixteen}}"></x-import>
+        <span>Now, <span class="lh-data" style="color: var(--ink)">21:40</span></span>
+      </span>
+      <x-import component-from-global-scope="LightHead.Button" variant="quiet">Change time</x-import>
+    </div>
+    <x-import component-from-global-scope="LightHead.OptionGrid" label="Strain" columns="{{one}}" default-value="nl" options="{{strains}}"></x-import>
+  </main>
+  <div style="padding: 0 16px">
+    <x-import component-from-global-scope="LightHead.ActionBar"></x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+function examplePhoto() {
+/* Sample stand-in for a user's own strain photo: a painted texture, not a real strain. */
+try {
+var c = document.createElement('canvas'); c.width = c.height = 224; var g = c.getContext('2d');
+var bg = g.createRadialGradient(90, 80, 10, 112, 112, 160); bg.addColorStop(0, '#9dbf8a'); bg.addColorStop(0.55, '#4f7a45'); bg.addColorStop(1, '#22361f');
+g.fillStyle = bg; g.fillRect(0, 0, 224, 224);
+var s = 7; function r() { s = (s * 16807) % 2147483647; return s / 2147483647; }
+for (var i = 0; i < 260; i++) { g.fillStyle = 'rgba(' + (220 + r() * 35 | 0) + ',' + (200 + r() * 40 | 0) + ',150,' + (r() * 0.35) + ')'; g.beginPath(); g.arc(r() * 224, r() * 224, r() * 3 + 0.5, 0, 7); g.fill(); }
+return c.toDataURL('image/jpeg', 0.85);
+} catch (e) { return undefined; }
+}
+class Component extends DCLogic {
+renderVals() {
+if (this._photo === undefined) this._photo = examplePhoto() || null;
+var L = window.LightHead, h = window.React.createElement;
+function av(name, type, src) { return L && L.StrainAvatar ? h(L.StrainAvatar, { name: name, type: type, src: src, size: 'md' }) : undefined; }
+return {
+theme: this.props.dark ? 'dark' : 'light',
+one: 1, three: 3, sixteen: 16,
+strains: [
+{ value: 'nl', label: 'Northern Lights', hint: 'Last time', media: av('Northern Lights', 'indica', this._photo || undefined) },
+{ value: 'dp', label: 'Durban Poison', media: av('Durban Poison', 'sativa') },
+{ value: 'bd', label: 'Blue Dream', media: av('Blue Dream', 'hybrid') },
+{ value: 'acdc', label: 'ACDC', media: av('ACDC', 'cbd') },
+{ value: 'other', label: 'Something else', icon: 'plus' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

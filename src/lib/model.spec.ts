@@ -1,0 +1,96 @@
+import { describe, expect, it } from 'vitest';
+import {
+	applyStash, breakProgress, clamp, dailyGrams, DEFAULT_SETTINGS, groupByDay, mgThc, nudge, periodRange, prefill, snapshot, totals,
+	type Session, type Strain
+} from './model.ts';
+import { initials } from './photo.ts';
+import { formatNumber, formatPercent, parseNumber, translate } from './i18n.svelte.ts';
+
+const nl: Strain = { id: 'nl', name: 'Northern Lights', type: 'indica', thc: 18, cbd: 0.2, terpenes: [], stashG: 3.2, createdAt: 0, updatedAt: 0 };
+const at = (y: number, m: number, d: number, h = 12) => new Date(y, m - 1, d, h).getTime();
+const sess = (p: Partial<Session>): Session => ({ id: Math.random() + '', at: 0, strainName: 'Northern Lights', strainType: 'indica', thc: 18, cbd: 0.2, method: 'vape', amount: 0.15, unit: 'g', effects: [], ...p });
+
+describe('THC and snapshot', () => {
+	it('derives mg THC from grams × % × 10', () => expect(mgThc(0.15, 'g', 18)).toBe(27));
+	it('takes edible mg as THC', () => expect(mgThc(5, 'mg', 18)).toBe(5));
+	it('snapshots the strain at save time', () => {
+		const snap = snapshot(nl, { method: 'vape', amount: 0.15, unit: 'g' });
+		expect(snap).toMatchObject({ strainName: 'Northern Lights', thc: 18, mgThc: 27 });
+	});
+});
+
+describe('prefill', () => {
+	it('uses last strain, method and amount for that strain', () => {
+		const p = prefill({ ...DEFAULT_SETTINGS, lastStrainId: 'nl', lastMethod: 'joint', amountByStrain: { nl: { amount: 0.3, unit: 'g' } } }, [nl]);
+		expect(p).toMatchObject({ strainId: 'nl', method: 'joint', amount: 0.3, amountIsLast: true });
+	});
+	it('falls back to sensible defaults', () => expect(prefill(DEFAULT_SETTINGS, [])).toMatchObject({ strainId: undefined, method: 'vape', amount: 0.15 }));
+});
+
+describe('stash', () => {
+	it('subtracts grams, never below 0', () => {
+		expect(applyStash(3.2, 0.15, 'g')).toBe(3.05);
+		expect(applyStash(0.1, 0.15, 'g')).toBe(0);
+	});
+	it('ignores edibles and untracked stash', () => {
+		expect(applyStash(3.2, 5, 'mg')).toBe(3.2);
+		expect(applyStash(undefined, 0.15, 'g')).toBeUndefined();
+	});
+	it('gives back on delete', () => expect(applyStash(3.05, 0.15, 'g', 1)).toBe(3.2));
+});
+
+describe('periods and totals', () => {
+	it('starts the week on Monday for de and pl', () => {
+		const r = periodRange('week', at(2026, 10, 21), 'de'); // Wednesday
+		expect(new Date(r.start).getDate()).toBe(19);
+		expect(new Date(r.end).getDate()).toBe(26);
+	});
+	it('sums grams, mg THC, sessions and days clear', () => {
+		const r = periodRange('week', at(2026, 10, 21), 'pl');
+		const list = [sess({ at: at(2026, 10, 19) }), sess({ at: at(2026, 10, 19, 21), amount: 0.3, mgThc: 54 }), sess({ at: at(2026, 10, 21), unit: 'mg', method: 'edible', amount: 5, mgThc: 5 }), sess({ at: at(2026, 10, 10) })];
+		list[0].mgThc = 27;
+		const tot = totals(list, r.start, r.end, at(2026, 10, 21, 23));
+		expect(tot).toMatchObject({ grams: 0.45, edibleMg: 5, sessions: 3, mgThc: 86, daysClear: 1 });
+		expect(tot.byStrain).toEqual([{ name: 'Northern Lights', grams: 0.45 }]);
+	});
+	it('builds a 7-day trend, oldest first', () => {
+		const tr = dailyGrams([sess({ at: at(2026, 10, 21) }), sess({ at: at(2026, 10, 15) })], at(2026, 10, 21, 22));
+		expect(tr).toEqual([0.15, 0, 0, 0, 0, 0, 0.15]);
+	});
+	it('groups by day, newest first', () => {
+		const g = groupByDay([sess({ at: at(2026, 10, 19) }), sess({ at: at(2026, 10, 21) }), sess({ at: at(2026, 10, 21, 20) })]);
+		expect(g.map((x) => x.sessions.length)).toEqual([2, 1]);
+	});
+});
+
+describe('break', () => {
+	it('counts day N of total', () => {
+		const b = { id: 'b', start: at(2026, 10, 13, 9), lengthDays: 21 };
+		expect(breakProgress(b, at(2026, 10, 21))).toMatchObject({ day: 9, daysLeft: 12, complete: false });
+		expect(breakProgress(b, at(2026, 11, 20))).toMatchObject({ day: 21, daysLeft: 0, complete: true });
+	});
+});
+
+describe('design-system helpers', () => {
+	it('makes initials', () => {
+		expect(initials('Northern Lights')).toBe('NL');
+		expect(initials('ACDC')).toBe('AC');
+		expect(initials('Gelato #41')).toBe('G4');
+		expect(initials('łódzka mgła')).toBe('ŁM');
+	});
+	it('clamps and nudges NumberField values', () => {
+		expect(clamp(12, 0, 10)).toBe(10);
+		expect(nudge(0.15, 1, 0.05, 0, 10)).toBe(0.2);
+		expect(nudge(0, -1, 0.05, 0, 10)).toBe(0);
+		expect(parseNumber('0,15')).toBe(0.15);
+		expect(parseNumber('abc')).toBeNull();
+	});
+	it('formats per locale and uses Polish plurals', () => {
+		expect(formatNumber('de', 0.15, 2)).toBe('0,15');
+		expect(formatPercent('de', 21)).toBe('21\u00a0%');
+		expect(formatPercent('pl', 21)).toBe('21%');
+		expect(translate('pl', 'daysToGo', { count: 1 })).toBe('Został 1 dzień');
+		expect(translate('pl', 'daysToGo', { count: 2 })).toBe('Zostały 2 dni');
+		expect(translate('pl', 'daysToGo', { count: 5 })).toBe('Zostało 5 dni');
+	});
+});

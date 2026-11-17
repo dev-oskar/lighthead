@@ -1,0 +1,81 @@
+<!-- @dsCard group="Flow" height=820 page subtitle="The quick log flow, clickable, in English, German and Polish" -->
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Quick log — preview</title>
+<style>
+  .lang { max-width: 400px; margin: 0 auto; padding: 16px 16px 0; box-sizing: border-box; }
+  .phone { max-width: 400px; margin: 0 auto; min-height: 720px; display: flex; flex-direction: column; padding: 16px; box-sizing: border-box; background: var(--surface); }
+  .phone main { flex: 1; padding-block: 8px 24px; }
+  .when { display: flex; align-items: center; gap: 8px; color: var(--ink-muted); font-size: 14px; }
+  .derived { margin: -8px 0 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+  .derived .lh-data { color: var(--ink); font-size: 14px; }
+  .done { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px; padding-top: 96px; }
+  .done-mark { width: 72px; height: 72px; border-radius: 22px 4px 22px 4px; background: var(--tide-soft); color: var(--tide); display: flex; align-items: center; justify-content: center; }
+  .done h2 { margin: 0; font-family: var(--font-display); font-size: 26px; line-height: 32px; font-weight: 600; }
+  .done p { margin: 0; color: var(--ink-muted); }
+  .eyebrow { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+  var L = window.LightHead, h = React.createElement, useState = React.useState;
+  var STRAINS = { nl: { name: 'Northern Lights', thc: 18 }, dp: { name: 'Durban Poison', thc: 21 }, acdc: { name: 'ACDC', thc: 1 } };
+  function Flow() {
+    var x = L.useLocale(), t = x.t;
+    var s = useState(1), step = s[0], setStep = s[1];
+    var d = useState('fwd'), dir = d[0], setDir = d[1];
+    var st = useState('nl'), strain = st[0], setStrain = st[1];
+    var m = useState('vape'), method = m[0], setMethod = m[1];
+    var a = useState(0.15), amount = a[0], setAmount = a[1];
+    var cur = STRAINS[strain] || { name: t('somethingElse'), thc: 15 };
+    function go(n) { setDir(n > step ? 'fwd' : 'back'); setStep(n); }
+    var body, bar;
+    if (step === 1) {
+      body = h(L.Step, { key: 1, direction: dir },
+        h(L.StepHeader, { step: 1, total: 3, title: t('qStrain') }),
+        h('div', { className: 'when' }, h(L.Icon, { name: 'clock', size: 16 }), t('now') + ', 21:40'),
+        h(L.OptionGrid, { label: t('strain'), columns: 1, value: strain, onChange: setStrain, options: [
+          { value: 'nl', label: 'Northern Lights', hint: t('lastTime'), media: h(L.StrainAvatar, { name: 'Northern Lights', type: 'indica', size: 'md' }) }, { value: 'dp', label: 'Durban Poison', media: h(L.StrainAvatar, { name: 'Durban Poison', type: 'sativa', size: 'md' }) }, { value: 'acdc', label: 'ACDC', media: h(L.StrainAvatar, { name: 'ACDC', type: 'cbd', size: 'md' }) }, { value: 'other', label: t('somethingElse'), icon: 'plus' }] }));
+      bar = h(L.ActionBar, { onPrimary: function () { go(2); } });
+    } else if (step === 2) {
+      body = h(L.Step, { key: 2, direction: dir },
+        h(L.StepHeader, { step: 2, total: 3, title: t('qAmount'), subtitle: t('prefilledSub'), onClose: function () { go(1); }, closeLabel: t('back') }),
+        h(L.OptionGrid, { label: t('method'), value: method, onChange: setMethod, options: [
+          { value: 'joint', label: t('joint'), icon: 'session' }, { value: 'vape', label: t('vape'), icon: 'cloud' }, { value: 'bong', label: t('bong'), icon: 'stash' }, { value: 'edible', label: t('edible'), icon: 'leaf' }] }),
+        method === 'edible'
+          ? h(L.NumberField, { key: 'mg', label: t('amount'), size: 'lg', unit: 'mg', step: 2.5, decimals: 1, max: 200, defaultValue: 5, prefilled: true })
+          : h(L.NumberField, { key: 'g', label: t('amount'), size: 'lg', unit: 'g', step: 0.05, decimals: 2, max: 10, value: amount, onChange: setAmount, prefilled: amount === 0.15 }),
+        method === 'edible' ? null : h('p', { className: 'derived' },
+          h('span', { className: 'lh-data' }, t('thcDerived', { mg: x.num(Math.round(amount * cur.thc * 10)) })), ' ',
+          t('thcIn', { amount: x.num(amount, 2) + ' g', strain: cur.name, pct: x.pct(cur.thc) })));
+      bar = h(L.ActionBar, { onPrimary: function () { go(3); } });
+    } else if (step === 3) {
+      body = h(L.Step, { key: 3, direction: dir },
+        h(L.StepHeader, { step: 3, total: 3, title: t('qFeel'), subtitle: t('optionalSub'), onClose: function () { go(2); }, closeLabel: t('back') }),
+        h('span', { className: 'eyebrow' }, t('effects')),
+        h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '8px' } }, ['calm', 'happy', 'creative', 'focused', 'sleepy', 'hungry'].map(function (e) { return h(L.Chip, { key: e }, t(e)); })),
+        h('span', { className: 'eyebrow' }, t('rating')),
+        h(L.Rating, { size: 36 }));
+      bar = h(L.ActionBar, { primary: t('saveSession'), secondary: true, onPrimary: function () { go(4); }, onSecondary: function () { go(4); } });
+    } else {
+      body = h(L.Step, { key: 4, direction: 'fwd' },
+        h('div', { className: 'done' },
+          h('div', { className: 'done-mark' }, h(L.Icon, { name: 'check', size: 36 })),
+          h('h2', null, t('sessionSaved')),
+          h('p', { className: 'lh-data' }, '21:40 · ' + cur.name + ' · ' + (method === 'edible' ? x.num(5, 1) + ' mg' : x.num(amount, 2) + ' g'))));
+      bar = h(L.ActionBar, { primary: t('done'), onPrimary: function () { go(1); } });
+    }
+    return h('div', { className: 'phone' }, h('main', null, body), bar);
+  }
+  function Demo() {
+    var l = useState('en'), locale = l[0], setLocale = l[1];
+    React.useEffect(function () { document.documentElement.lang = locale; }, [locale]);
+    return h(React.Fragment, null,
+      h('div', { className: 'lang' }, h(L.SegmentedControl, { label: 'Language', value: locale, onChange: setLocale, options: [{ value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'pl', label: 'Polski' }] })),
+      h(L.LocaleProvider, { locale: locale }, h(Flow)));
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(h(Demo));
+</script>
+</body>
+</html>

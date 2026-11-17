@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stats</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 24px 16px 0; display: flex; flex-direction: column; gap: 20px">
+    <header style="display: flex; flex-direction: column; gap: 4px">
+      <span class="lh-overline">15–21 October</span>
+      <h1 class="lh-title">Stats</h1>
+    </header>
+    <x-import component-from-global-scope="LightHead.SegmentedControl" label="Period" default-value="week" options="{{periods}}"></x-import>
+    <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <x-import component-from-global-scope="LightHead.StatTile" label="Amount" value="1.35" unit="g" trend="{{gTrend}}" note="0.4 g less than last week"></x-import>
+      <x-import component-from-global-scope="LightHead.StatTile" label="Sessions" value="9" tone="resin" trend="{{sTrend}}" note="Mostly evenings"></x-import>
+      <x-import component-from-global-scope="LightHead.StatTile" label="THC in material" value="≈ 231" unit="mg" note="From each strain&#39;s THC %"></x-import>
+      <x-import component-from-global-scope="LightHead.StatTile" label="Days clear" value="1" tone="tide" note="Sunday"></x-import>
+    </section>
+    <section class="lh-card" style="display: flex; flex-direction: column; gap: 12px">
+      <h2 class="lh-overline" style="margin: 0">By strain</h2>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 14px; line-height: 20px; font-weight: 600">Northern Lights</span><span class="lh-data" style="font-size: 14px">0.75 g</span></div>
+        <div style="height: 8px; border-radius: 9999px; background: var(--surface-sunk)"><div style="width: 100%; height: 8px; border-radius: 9999px; background: var(--moss)"></div></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 14px; line-height: 20px; font-weight: 600">Durban Poison</span><span class="lh-data" style="font-size: 14px">0.45 g</span></div>
+        <div style="height: 8px; border-radius: 9999px; background: var(--surface-sunk)"><div style="width: 60%; height: 8px; border-radius: 9999px; background: var(--moss)"></div></div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <div style="display: flex; justify-content: space-between; gap: 8px"><span style="font-size: 14px; line-height: 20px; font-weight: 600">ACDC</span><span class="lh-data" style="font-size: 14px">0.15 g</span></div>
+        <div style="height: 8px; border-radius: 9999px; background: var(--surface-sunk)"><div style="width: 20%; height: 8px; border-radius: 9999px; background: var(--moss)"></div></div>
+      </div>
+    </section>
+  </main>
+  <x-import component-from-global-scope="LightHead.TabBar" default-value="stats"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+theme: this.props.dark ? 'dark' : 'light',
+periods: [
+{ value: 'week', label: 'Week' },
+{ value: 'month', label: 'Month' },
+{ value: 'year', label: 'Year' }
+],
+gTrend: [0.3, 0.2, 0.25, 0, 0.15, 0.3, 0.15],
+sTrend: [2, 1, 2, 0, 1, 2, 1]
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>New strain: name and type</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 20px">
+    <x-import component-from-global-scope="LightHead.StepHeader" step="{{one}}" total="{{three}}" title="What is it called?"></x-import>
+    <x-import component-from-global-scope="LightHead.TextField" label="Name" default-value="Durban Poison" hint="Add a name so you can find this strain later."></x-import>
+    <x-import component-from-global-scope="LightHead.OptionGrid" label="Type" columns="{{two}}" default-value="sativa" options="{{types}}"></x-import>
+    <x-import component-from-global-scope="LightHead.TextField" label="Breeder (optional)" placeholder="For example Dutch Passion"></x-import>
+  </main>
+  <div style="padding: 0 16px">
+    <x-import component-from-global-scope="LightHead.ActionBar"></x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+var L = window.LightHead, h = window.React.createElement;
+function av(name, type) { return L && L.StrainAvatar ? h(L.StrainAvatar, { name: name, type: type, size: 'sm' }) : undefined; }
+return {
+theme: this.props.dark ? 'dark' : 'light',
+one: 1, two: 2, three: 3,
+types: [
+{ value: 'indica', label: 'Indica', media: av('Durban Poison', 'indica') },
+{ value: 'sativa', label: 'Sativa', media: av('Durban Poison', 'sativa') },
+{ value: 'hybrid', label: 'Hybrid', media: av('Durban Poison', 'hybrid') },
+{ value: 'cbd', label: 'CBD', media: av('Durban Poison', 'cbd') }
+]
+};
+}
+}
+</script>
+</body>
+</html>

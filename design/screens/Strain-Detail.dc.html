@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Northern Lights</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-left: -12px">
+      <x-import component-from-global-scope="LightHead.Button" variant="quiet">All strains</x-import>
+      <x-import component-from-global-scope="LightHead.Button" variant="quiet">Edit</x-import>
+    </div>
+    <section style="display: flex; flex-direction: column; gap: 12px; padding: 20px; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 22px 4px 22px 4px">
+      <div style="display: flex; align-items: center; gap: 16px">
+        <x-import component-from-global-scope="LightHead.StrainAvatar" name="Northern Lights" type="indica" size="xl" src="{{nlPhoto}}" editable="{{yes}}"></x-import>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 6px">
+          <x-import component-from-global-scope="LightHead.StrainBadge" type="indica">Indica</x-import>
+          <h1 class="lh-title">Northern Lights</h1>
+          <p class="lh-meta">Sensi Seeds</p>
+          <x-import component-from-global-scope="LightHead.Rating" value="{{n4}}" read-only="{{yes}}" size="{{n18}}" label="Your rating"></x-import>
+        </div>
+      </div>
+      <dl class="lh-cannab">
+        <div><dt>THC</dt><dd class="lh-data">18%</dd></div>
+        <div><dt>CBD</dt><dd class="lh-data">0.2%</dd></div>
+        <div><dt>Sessions</dt><dd class="lh-data">14</dd></div>
+      </dl>
+      <div class="lh-tags">
+        <span class="lh-tag">Myrcene</span>
+        <span class="lh-tag">Caryophyllene</span>
+        <span class="lh-tag">Limonene</span>
+      </div>
+    </section>
+    <section style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 14px">
+      <span style="color: var(--ink-muted); display: flex">
+        <x-import component-from-global-scope="LightHead.Icon" name="stash" size="{{n20}}"></x-import>
+      </span>
+      <div style="flex: 1; display: flex; flex-direction: column">
+        <span style="font-size: 14px; line-height: 18px; font-weight: 600">In stash</span>
+        <span class="lh-data">3.2 g</span>
+      </div>
+      <x-import component-from-global-scope="LightHead.Button" variant="secondary">Update</x-import>
+    </section>
+    <section style="display: flex; flex-direction: column; gap: 12px">
+      <h2 class="lh-overline" style="margin: 0">Your sessions</h2>
+      <x-import component-from-global-scope="LightHead.SessionCard" time="21:40" ago="Today" strain="Northern Lights" method="Vape" amount="0.15 g" setting="At home" effects="{{effA}}" rating="{{n4}}" photo="{{nlPhoto}}"></x-import>
+      <x-import component-from-global-scope="LightHead.SessionCard" time="22:05" ago="Sun" strain="Northern Lights" method="Vape" amount="0.2 g" setting="At home" effects="{{effB}}" photo="{{nlPhoto}}"></x-import>
+    </section>
+  </main>
+  <x-import component-from-global-scope="LightHead.TabBar" default-value="strains"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+function examplePhoto() {
+/* Sample stand-in for a user's own strain photo: a painted texture, not a real strain. */
+try {
+var c = document.createElement('canvas'); c.width = c.height = 224; var g = c.getContext('2d');
+var bg = g.createRadialGradient(90, 80, 10, 112, 112, 160); bg.addColorStop(0, '#9dbf8a'); bg.addColorStop(0.55, '#4f7a45'); bg.addColorStop(1, '#22361f');
+g.fillStyle = bg; g.fillRect(0, 0, 224, 224);
+var s = 7; function r() { s = (s * 16807) % 2147483647; return s / 2147483647; }
+for (var i = 0; i < 260; i++) { g.fillStyle = 'rgba(' + (220 + r() * 35 | 0) + ',' + (200 + r() * 40 | 0) + ',150,' + (r() * 0.35) + ')'; g.beginPath(); g.arc(r() * 224, r() * 224, r() * 3 + 0.5, 0, 7); g.fill(); }
+return c.toDataURL('image/jpeg', 0.85);
+} catch (e) { return undefined; }
+}
+class Component extends DCLogic {
+renderVals() {
+if (this._photo === undefined) this._photo = examplePhoto() || null;
+return {
+theme: this.props.dark ? 'dark' : 'light',
+nlPhoto: this._photo || undefined,
+yes: true, n4: 4, n18: 18, n20: 20,
+effA: ['Calm', 'Sleepy'],
+effB: ['Calm']
+};
+}
+}
+</script>
+</body>
+</html>

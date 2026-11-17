@@ -1,0 +1,21 @@
+/* App shell layout. Component styles live in components.css (verbatim from the design system). */
+html { background: var(--surface); }
+html[data-theme='dark'] { color-scheme: dark; }
+.lh-app { max-width: 520px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column; }
+/* A tab screen: title, the figure that matters, then lists. Leaves room for the fixed TabBar. */
+.lh-page { flex: 1; padding: var(--space-6) var(--space-4) calc(96px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: var(--space-6); }
+.lh-page-head { display: flex; flex-direction: column; gap: var(--space-1); }
+.lh-page-head-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+/* A flow (quick log, new strain): one question, content in the middle, ActionBar at the bottom. */
+.lh-flow { flex: 1; display: flex; flex-direction: column; min-height: 100dvh; padding: var(--space-4) var(--space-4) 0; box-sizing: border-box; }
+.lh-flow > main { flex: 1; display: flex; flex-direction: column; gap: var(--space-5); padding-bottom: var(--space-6); }
+.lh-section { display: flex; flex-direction: column; gap: var(--space-3); }
+.lh-fab-wrap { position: fixed; right: max(var(--space-4), calc(50% - 260px + var(--space-4))); bottom: calc(92px + env(safe-area-inset-bottom)); z-index: 5; }
+.lh-title, .lh-display, .lh-heading { margin: 0; font-family: var(--font-display); font-weight: 600; color: var(--ink); }
+.lh-title { font-size: 26px; line-height: 32px; letter-spacing: -0.01em; }
+.lh-display { font-size: 34px; line-height: 38px; letter-spacing: -0.02em; }
+.lh-heading { font-size: 19px; line-height: 24px; }
+.lh-empty { padding-top: var(--space-12); text-align: center; color: var(--ink-muted); font-size: 17px; line-height: 26px; }
+.lh-confirm { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4); border-radius: var(--radius-md); background: var(--clay-soft); }
+.lh-confirm-row { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.lh-app > .lh-tabbar { position: fixed; left: 0; right: 0; bottom: 0; max-width: 520px; margin: 0 auto; z-index: 10; }

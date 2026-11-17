@@ -1,0 +1,47 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-10-21T12:00:00Z"},
+  "title": "LightHead screens",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "Today"},
+    "Log-1-Strain.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "Log 1 · Strain"},
+    "Log-2-Amount.dc.html": {"x": 940, "y": 0, "w": 390, "h": 844, "title": "Log 2 · Amount"},
+    "Log-3-Feel.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "Log 3 · Feel (optional)"},
+    "Log-4-Saved.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 844, "title": "Log · Saved"},
+    "Strains.dc.html": {"x": 0, "y": 1184, "w": 390, "h": 844, "title": "Strains"},
+    "Strain-Detail.dc.html": {"x": 470, "y": 1184, "w": 390, "h": 844, "title": "Strain detail"},
+    "Stats.dc.html": {"x": 940, "y": 1184, "w": 390, "h": 844, "title": "Stats"},
+    "Break.dc.html": {"x": 1410, "y": 1184, "w": 390, "h": 844, "title": "Break"},
+    "Today-Dark.dc.html": {"x": 1880, "y": 1184, "w": 390, "h": 844, "title": "Today · dark"},
+    "Break-Dark.dc.html": {"x": 2350, "y": 1184, "w": 390, "h": 844, "title": "Break · dark"},
+    "New-Strain-1-Name.dc.html": {"x": 0, "y": 2368, "w": 390, "h": 844, "title": "New strain 1 · Name and type"},
+    "New-Strain-2-Cannabinoids.dc.html": {"x": 470, "y": 2368, "w": 390, "h": 844, "title": "New strain 2 · THC and CBD"},
+    "New-Strain-3-Photo.dc.html": {"x": 940, "y": 2368, "w": 390, "h": 844, "title": "New strain 3 · Photo (optional)"}
+  },
+  "order": [
+    "Main.dc.html",
+    "Log-1-Strain.dc.html",
+    "Log-2-Amount.dc.html",
+    "Log-3-Feel.dc.html",
+    "Log-4-Saved.dc.html",
+    "Strains.dc.html",
+    "Strain-Detail.dc.html",
+    "Stats.dc.html",
+    "Break.dc.html",
+    "Today-Dark.dc.html",
+    "Break-Dark.dc.html",
+    "New-Strain-1-Name.dc.html",
+    "New-Strain-2-Cannabinoids.dc.html",
+    "New-Strain-3-Photo.dc.html"
+  ],
+  "notes": {
+    "row1": {"x": 0, "y": -300, "text": "Today and the quick log", "kind": "title1", "maxW": 2270},
+    "row2": {"x": 0, "y": 884, "text": "Strains, stats and breaks", "kind": "title1", "maxW": 2740},
+    "row3": {"x": 0, "y": 2068, "text": "Adding a strain", "kind": "title1", "maxW": 1330}
+  },
+  "designSystems": [
+    {"title": "LightHead", "namespace": "lighthead", "artifact": "https://claude.ai/code/artifact/0ded8647-61f8-46d8-bce1-ca467e919aa3", "version": "1792581716-1f86", "copiedAt": "2026-10-21T12:30:00Z"}
+  ]
+}

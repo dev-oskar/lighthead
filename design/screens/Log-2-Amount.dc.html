@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Log session: amount</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 20px">
+    <x-import component-from-global-scope="LightHead.StepHeader" step="{{two}}" total="{{three}}" title="How much?" subtitle="Prefilled from last time. Adjust if needed." close-label="Back"></x-import>
+    <x-import component-from-global-scope="LightHead.OptionGrid" label="Method" columns="{{two}}" default-value="vape" options="{{methods}}"></x-import>
+    <x-import component-from-global-scope="LightHead.NumberField" label="Amount" size="lg" unit="g" step="{{stepG}}" decimals="{{two}}" min="{{zero}}" max="{{ten}}" default-value="{{amount}}" prefilled="{{yes}}"></x-import>
+    <p style="margin: -8px 0 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)"><span class="lh-data" style="font-size: 14px; color: var(--ink)">≈ 27 mg THC</span> in 0.15 g of Northern Lights (18%)</p>
+  </main>
+  <div style="padding: 0 16px">
+    <x-import component-from-global-scope="LightHead.ActionBar"></x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+theme: this.props.dark ? 'dark' : 'light',
+two: 2, three: 3, zero: 0, ten: 10, stepG: 0.05, amount: 0.15, yes: true,
+methods: [
+{ value: 'joint', label: 'Joint', icon: 'session' },
+{ value: 'vape', label: 'Vape', icon: 'cloud', hint: 'Last time' },
+{ value: 'bong', label: 'Bong', icon: 'stash' },
+{ value: 'edible', label: 'Edible', icon: 'leaf' }
+]
+};
+}
+}
+</script>
+</body>
+</html>

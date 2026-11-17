@@ -1,0 +1,40 @@
+/* LightHead tokens as CSS variables, from the design system's tokens.json. Fonts are self-hosted. */
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../assets/fonts/AtkinsonHyperlegibleNext-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../assets/fonts/AtkinsonHyperlegibleNext-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("../assets/fonts/AtkinsonHyperlegibleNext-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Mono"; src: url("../assets/fonts/AtkinsonHyperlegibleMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Mono"; src: url("../assets/fonts/AtkinsonHyperlegibleMono-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Bricolage Grotesque"; src: url("../assets/fonts/BricolageGrotesque-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+
+:root, [data-theme="light"] {
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-12: 48px;
+  --radius-xs: 4px; --radius-sm: 8px; --radius-md: 14px; --radius-lg: 22px; --radius-full: 9999px;
+  --opacity-disabled: 0.45;
+  --surface: #f3f5ef; --surface-raised: #fcfdfa; --surface-sunk: #e7ebe2;
+  --line: #d3dacd; --line-strong: #7d8a79;
+  --ink: #18231c; --ink-muted: #536057;
+  --moss: #3b6b47; --moss-strong: #2c5236; --moss-soft: #dce8d8; --on-moss: #f5faf3;
+  --resin: #8f5d0f; --resin-soft: #f3e6cc;
+  --dusk: #5d5590; --dusk-soft: #e6e3f2;
+  --tide: #2c6580; --tide-soft: #d9e9f0; --on-tide: #f4fafc;
+  --clay: #a3412a; --clay-soft: #f6e0d9;
+  --shadow-sm: 0 1px 2px #18231c0f, 0 1px 3px #18231c14;
+  --shadow-lg: 0 6px 12px #18231c12, 0 16px 32px -4px #18231c24;
+  --focus-ring: 0 0 0 2px #f3f5ef, 0 0 0 4px #2c6580;
+}
+[data-theme="dark"] {
+  --surface: #121814; --surface-raised: #1a221c; --surface-sunk: #0c110e;
+  --line: #2b362e; --line-strong: #62726a;
+  --ink: #e6ece4; --ink-muted: #a3b0a5;
+  --moss: #8cc49a; --moss-strong: #a9d8b5; --moss-soft: #1f3325; --on-moss: #0f1f13;
+  --resin: #e3b45e; --resin-soft: #382b12;
+  --dusk: #b6ade8; --dusk-soft: #272339;
+  --tide: #86c1db; --tide-soft: #15303b; --on-tide: #0b1d25;
+  --clay: #f0977e; --clay-soft: #3c1f17;
+  --shadow-sm: 0 1px 2px #00000080;
+  --shadow-lg: 0 16px 32px -4px #000000cc;
+  --focus-ring: 0 0 0 2px #121814, 0 0 0 4px #86c1db;
+}

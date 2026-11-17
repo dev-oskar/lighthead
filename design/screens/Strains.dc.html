@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Strains</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 24px 16px 0; display: flex; flex-direction: column; gap: 20px">
+    <header style="display: flex; align-items: center; justify-content: space-between; gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <span class="lh-overline">12 strains · 3 in stash</span>
+        <h1 class="lh-title">Strains</h1>
+      </div>
+      <x-import component-from-global-scope="LightHead.Button" variant="secondary" icon="plus">Add strain</x-import>
+    </header>
+    <div style="display: flex; gap: 8px; overflow: hidden; margin-right: -16px">
+      <x-import component-from-global-scope="LightHead.Chip" default-selected="{{yes}}">All</x-import>
+      <x-import component-from-global-scope="LightHead.Chip">Indica</x-import>
+      <x-import component-from-global-scope="LightHead.Chip">Sativa</x-import>
+      <x-import component-from-global-scope="LightHead.Chip">Hybrid</x-import>
+      <x-import component-from-global-scope="LightHead.Chip">CBD</x-import>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <x-import component-from-global-scope="LightHead.StrainCard" name="Northern Lights" type="indica" breeder="Sensi Seeds" thc="{{n18}}" cbd="{{n02}}" sessions="{{n14}}" in-stash="3.2 g" terpenes="{{terpA}}" rating="{{n4}}" photo="{{nlPhoto}}"></x-import>
+      <x-import component-from-global-scope="LightHead.StrainCard" name="Durban Poison" type="sativa" breeder="Dutch Passion" thc="{{n21}}" cbd="{{n04}}" sessions="{{n6}}" in-stash="1.1 g" terpenes="{{terpB}}" rating="{{n3}}"></x-import>
+      <x-import component-from-global-scope="LightHead.StrainCard" name="ACDC" type="cbd" thc="{{n1}}" cbd="{{n16}}" sessions="{{n3}}" in-stash="0 g" terpenes="{{terpC}}"></x-import>
+    </div>
+  </main>
+  <x-import component-from-global-scope="LightHead.TabBar" default-value="strains"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+function examplePhoto() {
+/* Sample stand-in for a user's own strain photo: a painted texture, not a real strain. */
+try {
+var c = document.createElement('canvas'); c.width = c.height = 224; var g = c.getContext('2d');
+var bg = g.createRadialGradient(90, 80, 10, 112, 112, 160); bg.addColorStop(0, '#9dbf8a'); bg.addColorStop(0.55, '#4f7a45'); bg.addColorStop(1, '#22361f');
+g.fillStyle = bg; g.fillRect(0, 0, 224, 224);
+var s = 7; function r() { s = (s * 16807) % 2147483647; return s / 2147483647; }
+for (var i = 0; i < 260; i++) { g.fillStyle = 'rgba(' + (220 + r() * 35 | 0) + ',' + (200 + r() * 40 | 0) + ',150,' + (r() * 0.35) + ')'; g.beginPath(); g.arc(r() * 224, r() * 224, r() * 3 + 0.5, 0, 7); g.fill(); }
+return c.toDataURL('image/jpeg', 0.85);
+} catch (e) { return undefined; }
+}
+class Component extends DCLogic {
+renderVals() {
+if (this._photo === undefined) this._photo = examplePhoto() || null;
+return {
+theme: this.props.dark ? 'dark' : 'light',
+nlPhoto: this._photo || undefined,
+yes: true,
+n18: 18, n02: 0.2, n14: 14, n4: 4, n21: 21, n04: 0.4, n6: 6, n3: 3, n1: 1, n16: 16,
+terpA: ['Myrcene', 'Caryophyllene'],
+terpB: ['Terpinolene', 'Pinene'],
+terpC: ['Myrcene', 'Pinene']
+};
+}
+}
+</script>
+</body>
+</html>
