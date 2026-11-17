@@ -20,7 +20,7 @@
 		{#each tabs as tab (tab.value)}
 			{@const on = !onSettings && tab.value === current}
 			<a class={['lh-rail-link', on && 'is-on']} href={resolve(tab.path)} aria-current={on ? 'page' : undefined}>
-				<Icon name={tab.icon} size={24} />{tab.value === 'log' ? t('log.journal') : t(tab.value)}
+				<Icon name={tab.icon} size={24} />{t(tab.value)}
 			</a>
 		{/each}
 	</div>
