@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Today, desktop</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div data-theme="{{theme}}" style="width: 1280px; height: 800px; box-sizing: border-box; display: flex; background: var(--surface); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 24px; overflow: hidden">
+  <nav aria-label="Main" style="width: 248px; flex: none; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px; padding: 28px 16px; background: var(--surface-raised); border-right: 1px solid var(--line)">
+    <span class="lh-title" style="padding: 0 12px 20px">LightHead</span>
+    <x-import component-from-global-scope="LightHead.Button" variant="primary" size="lg" icon="plus" class-name="lh-btn-fab" block="{{yes}}">Log session</x-import>
+    <div style="height: 16px"></div>
+    <a href="#" aria-current="page" style="display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; border-radius: 9999px; background: var(--moss-soft); color: var(--moss); font-size: 16px; font-weight: 600; text-decoration: none">
+      <x-import component-from-global-scope="LightHead.Icon" name="home" size="{{n24}}"></x-import>Today</a>
+    <a href="#" style="display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; border-radius: 9999px; color: var(--ink-muted); font-size: 16px; font-weight: 600; text-decoration: none">
+      <x-import component-from-global-scope="LightHead.Icon" name="session" size="{{n24}}"></x-import>Journal</a>
+    <a href="#" style="display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; border-radius: 9999px; color: var(--ink-muted); font-size: 16px; font-weight: 600; text-decoration: none">
+      <x-import component-from-global-scope="LightHead.Icon" name="leaf" size="{{n24}}"></x-import>Strains</a>
+    <a href="#" style="display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; border-radius: 9999px; color: var(--ink-muted); font-size: 16px; font-weight: 600; text-decoration: none">
+      <x-import component-from-global-scope="LightHead.Icon" name="stats" size="{{n24}}"></x-import>Stats</a>
+    <a href="#" style="display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; border-radius: 9999px; color: var(--ink-muted); font-size: 16px; font-weight: 600; text-decoration: none">
+      <x-import component-from-global-scope="LightHead.Icon" name="break" size="{{n24}}"></x-import>Break</a>
+    <div style="flex: 1"></div>
+    <a href="#" style="display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; border-radius: 9999px; color: var(--ink-muted); font-size: 16px; font-weight: 600; text-decoration: none">
+      <x-import component-from-global-scope="LightHead.Icon" name="lock" size="{{n24}}"></x-import>Settings</a>
+  </nav>
+  <main style="flex: 1; min-width: 0; padding: 32px 40px; display: flex; flex-direction: column; gap: 32px; overflow: hidden">
+    <header style="display: flex; flex-direction: column; gap: 4px">
+      <span class="lh-overline">Tuesday 17 November</span>
+      <h1 class="lh-title">Today</h1>
+    </header>
+    <section style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+      <x-import component-from-global-scope="LightHead.StatTile" label="This week" value="1.35" unit="g" trend="{{weekTrend}}" note="9 sessions"></x-import>
+      <x-import component-from-global-scope="LightHead.StatTile" label="Last session" value="2" unit="hrs" tone="tide" note="ago, at 21:40"></x-import>
+      <x-import component-from-global-scope="LightHead.StatTile" label="THC in material" value="≈ 231" unit="mg" note="This week"></x-import>
+      <x-import component-from-global-scope="LightHead.StatTile" label="Days clear" value="1" tone="tide" note="of 2 this week"></x-import>
+    </section>
+    <section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 24px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="lh-overline" style="margin: 0">Today</h2>
+        <x-import component-from-global-scope="LightHead.SessionCard" time="21:40" ago="Today" strain="Northern Lights" type="indica" method="Vape" amount="0.15 g" setting="At home" effects="{{effA}}" note="Lower temperature felt smoother." rating="{{n4}}"></x-import>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 class="lh-overline" style="margin: 0">Yesterday</h2>
+        <x-import component-from-global-scope="LightHead.SessionCard" time="19:10" ago="Mon" strain="Durban Poison" type="sativa" method="Joint" amount="0.3 g" setting="Outside"></x-import>
+        <x-import component-from-global-scope="LightHead.SessionCard" time="13:05" ago="Mon" strain="ACDC" type="cbd" method="Edible" amount="5 mg" effects="{{effB}}"></x-import>
+      </div>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+theme: this.props.dark ? 'dark' : 'light',
+yes: true, n4: 4, n24: 24,
+weekTrend: [0.3, 0.2, 0.25, 0, 0.15, 0.3, 0.15],
+effA: ['Calm', 'Sleepy'],
+effB: ['Calm']
+};
+}
+}
+</script>
+</body>
+</html>

@@ -135,6 +135,27 @@
       "w": 390,
       "h": 844,
       "title": "Settings · import"
+    },
+    "Today-Desktop.dc.html": {
+      "x": 0,
+      "y": 4736,
+      "w": 1280,
+      "h": 800,
+      "title": "Today · desktop"
+    },
+    "Strains-Desktop.dc.html": {
+      "x": 1360,
+      "y": 4736,
+      "w": 1280,
+      "h": 800,
+      "title": "Strains · desktop"
+    },
+    "Log-Break-Ask.dc.html": {
+      "x": 2720,
+      "y": 4736,
+      "w": 390,
+      "h": 844,
+      "title": "Log during a break"
     }
   },
   "order": [
@@ -155,7 +176,10 @@
     "Journal.dc.html",
     "Break-Start.dc.html",
     "Settings.dc.html",
-    "Import-Confirm.dc.html"
+    "Import-Confirm.dc.html",
+    "Today-Desktop.dc.html",
+    "Strains-Desktop.dc.html",
+    "Log-Break-Ask.dc.html"
   ],
   "notes": {
     "row1": {
@@ -185,6 +209,13 @@
       "text": "Journal, breaks and settings",
       "kind": "title1",
       "maxW": 1800
+    },
+    "row5": {
+      "x": 0,
+      "y": 4436,
+      "text": "v1.1: desktop and breaks",
+      "kind": "title1",
+      "maxW": 3110
     }
   },
   "designSystems": [
