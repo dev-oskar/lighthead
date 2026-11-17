@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings: restore from file</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; margin-left: -12px">
+      <x-import component-from-global-scope="LightHead.Button" variant="quiet">Today</x-import>
+    </div>
+    <h1 class="lh-title">Settings</h1>
+    <section style="display: flex; flex-direction: column; gap: 12px">
+      <h2 class="lh-overline" style="margin: 0">Your data</h2>
+      <div style="display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 14px; background: var(--clay-soft)">
+        <strong class="lh-heading">Replace everything on this device?</strong>
+        <p style="margin: 0">The file <span class="lh-data" style="font-size: 15px">lighthead-2026-10-21.json</span> holds <span class="lh-data" style="font-size: 15px">12</span> strains and <span class="lh-data" style="font-size: 15px">47</span> sessions. What is on this device now will be removed.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <x-import component-from-global-scope="LightHead.Button" variant="danger">Replace</x-import>
+          <x-import component-from-global-scope="LightHead.Button" variant="secondary">Keep what I have</x-import>
+        </div>
+      </div>
+      <x-import component-from-global-scope="LightHead.Notice" tone="info" title="Save a backup first">You can save a file of what is here now before replacing it.</x-import>
+    </section>
+  </main>
+  <x-import component-from-global-scope="LightHead.TabBar" default-value="today"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+theme: this.props.dark ? 'dark' : 'light'
+};
+}
+}
+</script>
+</body>
+</html>

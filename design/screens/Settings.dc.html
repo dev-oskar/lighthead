@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Settings</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 12px 16px 0; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; align-items: center; margin-left: -12px">
+      <x-import component-from-global-scope="LightHead.Button" variant="quiet">Today</x-import>
+    </div>
+    <h1 class="lh-title">Settings</h1>
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 class="lh-overline" style="margin: 0">Language</h2>
+      <x-import component-from-global-scope="LightHead.SegmentedControl" label="Language" default-value="en" options="{{langs}}"></x-import>
+    </section>
+    <section style="display: flex; flex-direction: column; gap: 8px">
+      <h2 class="lh-overline" style="margin: 0">Theme</h2>
+      <x-import component-from-global-scope="LightHead.SegmentedControl" label="Theme" default-value="system" options="{{themes}}"></x-import>
+    </section>
+    <section style="display: flex; flex-direction: column; gap: 12px">
+      <h2 class="lh-overline" style="margin: 0">Your data</h2>
+      <x-import component-from-global-scope="LightHead.Notice" tone="private" icon="lock" title="Stored on this device only">LightHead never sends your journal anywhere. A backup file is the only copy outside this device.</x-import>
+      <p class="lh-meta" style="display: flex; align-items: center; gap: 8px">
+        <x-import component-from-global-scope="LightHead.Icon" name="check" size="{{sixteen}}"></x-import>
+        Protected from automatic clean-up · <span class="lh-data" style="font-size: 14px">2.4 MB</span> used
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <x-import component-from-global-scope="LightHead.Button" variant="secondary" icon="cloud">Save a backup file</x-import>
+        <x-import component-from-global-scope="LightHead.Button" variant="quiet">Restore from file</x-import>
+      </div>
+    </section>
+  </main>
+  <x-import component-from-global-scope="LightHead.TabBar" default-value="today"></x-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+theme: this.props.dark ? 'dark' : 'light',
+sixteen: 16,
+langs: [
+{ value: 'en', label: 'English' },
+{ value: 'de', label: 'Deutsch' },
+{ value: 'pl', label: 'Polski' }
+],
+themes: [
+{ value: 'system', label: 'System' },
+{ value: 'light', label: 'Light' },
+{ value: 'dark', label: 'Dark' }
+]
+};
+}
+}
+</script>
+</body>
+</html>
