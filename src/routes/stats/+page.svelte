@@ -99,6 +99,7 @@
 <style>
 	.stats { gap: var(--space-5); }
 	.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+	@media (min-width: 960px) { .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); } }
 	.bars { display: flex; flex-direction: column; gap: var(--space-3); }
 	.bars h2 { margin: 0; }
 	.bar { display: flex; flex-direction: column; gap: var(--space-1); }

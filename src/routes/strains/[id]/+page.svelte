@@ -66,72 +66,76 @@
 	</div>
 
 	{#if strain}
-		<section class="panel lh-leafcorner">
-			<div class="head">
-				<StrainAvatar name={strain.name} type={strain.type} size="xl" src={photo} editable onPick={pickPhoto} />
-				<div class="title">
-					<StrainBadge type={strain.type} />
-					<h1 class="lh-title">{strain.name}</h1>
-					{#if strain.breeder}<p class="lh-meta">{strain.breeder}</p>{/if}
-					<Rating
-						value={strain.rating ?? 0}
-						size={18}
-						label={t('yourRating')}
-						onChange={(v) => strain && save({ ...strain, rating: v || undefined })}
-					/>
-				</div>
-			</div>
-			<dl class="lh-cannab">
-				<div><dt>{t('thc')}</dt><dd class="lh-data">{pct(strain.thc)}</dd></div>
-				<div><dt>{t('cbd')}</dt><dd class="lh-data">{pct(strain.cbd)}</dd></div>
-				<div><dt>{t('sessions')}</dt><dd class="lh-data">{sessions.length}</dd></div>
-			</dl>
-			{#if strain.terpenes.length}
-				<div class="lh-tags">
-					{#each strain.terpenes as tp (tp)}<span class="lh-tag">{tp}</span>{/each}
-				</div>
-			{/if}
-		</section>
-
-		<section class="stash">
-			{#if stashDraft == null}
-				<span class="stash-icon"><Icon name="stash" size={20} /></span>
-				<div class="stash-text">
-					<span class="stash-label">{t('inStash')}</span>
-					<span class="lh-data">{grams(strain.stashG)}</span>
-				</div>
-				<Button variant="secondary" onclick={() => (stashDraft = strain?.stashG ?? 0)}>{t('update')}</Button>
-			{:else}
-				<div class="stash-edit">
-					<NumberField label={t('inStash')} unit={t('gUnit')} step={0.1} decimals={2} max={1000} bind:value={stashDraft} />
-					<div class="lh-confirm-row">
-						<Button variant="primary" onclick={saveStash}>{t('save')}</Button>
-						<Button variant="quiet" onclick={() => (stashDraft = null)}>{t('cancel')}</Button>
+		<div class="split">
+			<div class="col">
+				<section class="panel lh-leafcorner">
+					<div class="head">
+						<StrainAvatar name={strain.name} type={strain.type} size="xl" src={photo} editable onPick={pickPhoto} />
+						<div class="title">
+							<StrainBadge type={strain.type} />
+							<h1 class="lh-title">{strain.name}</h1>
+							{#if strain.breeder}<p class="lh-meta">{strain.breeder}</p>{/if}
+							<Rating
+								value={strain.rating ?? 0}
+								size={18}
+								label={t('yourRating')}
+								onChange={(v) => strain && save({ ...strain, rating: v || undefined })}
+							/>
+						</div>
 					</div>
-				</div>
-			{/if}
-		</section>
+					<dl class="lh-cannab">
+						<div><dt>{t('thc')}</dt><dd class="lh-data">{pct(strain.thc)}</dd></div>
+						<div><dt>{t('cbd')}</dt><dd class="lh-data">{pct(strain.cbd)}</dd></div>
+						<div><dt>{t('sessions')}</dt><dd class="lh-data">{sessions.length}</dd></div>
+					</dl>
+					{#if strain.terpenes.length}
+						<div class="lh-tags">
+							{#each strain.terpenes as tp (tp)}<span class="lh-tag">{tp}</span>{/each}
+						</div>
+					{/if}
+				</section>
 
-		<section class="lh-section">
-			<h2 class="lh-overline">{t('yourSessions')}</h2>
-			{#each sessions as s (s.id)}
-				<SessionCard
-					time={time(s.at)}
-					ago={date(s.at, { weekday: 'short', day: 'numeric', month: 'short' })}
-					strain={s.strainName}
-					type={s.strainType}
-					method={t(s.method)}
-					amount={amount(s)}
-					setting={s.setting ? t(s.setting) : undefined}
-					effects={s.effects.map((e) => t(e))}
-					note={s.note}
-					rating={s.rating}
-					{photo}
-				/>
-			{:else}
-				<p class="lh-meta">{t('noStrainSessions')}</p>
-			{/each}
-		</section>
+				<section class="stash">
+					{#if stashDraft == null}
+						<span class="stash-icon"><Icon name="stash" size={20} /></span>
+						<div class="stash-text">
+							<span class="stash-label">{t('inStash')}</span>
+							<span class="lh-data">{grams(strain.stashG)}</span>
+						</div>
+						<Button variant="secondary" onclick={() => (stashDraft = strain?.stashG ?? 0)}>{t('update')}</Button>
+					{:else}
+						<div class="stash-edit">
+							<NumberField label={t('inStash')} unit={t('gUnit')} step={0.1} decimals={2} max={1000} bind:value={stashDraft} />
+							<div class="lh-confirm-row">
+								<Button variant="primary" onclick={saveStash}>{t('save')}</Button>
+								<Button variant="quiet" onclick={() => (stashDraft = null)}>{t('cancel')}</Button>
+							</div>
+						</div>
+					{/if}
+				</section>
+
+			</div>
+			<section class="lh-section">
+				<h2 class="lh-overline">{t('yourSessions')}</h2>
+				{#each sessions as s (s.id)}
+					<SessionCard
+						time={time(s.at)}
+						ago={date(s.at, { weekday: 'short', day: 'numeric', month: 'short' })}
+						strain={s.strainName}
+						type={s.strainType}
+						method={t(s.method)}
+						amount={amount(s)}
+						setting={s.setting ? t(s.setting) : undefined}
+						effects={s.effects.map((e) => t(e))}
+						note={s.note}
+						rating={s.rating}
+						{photo}
+					/>
+				{:else}
+					<p class="lh-meta">{t('noStrainSessions')}</p>
+				{/each}
+			</section>
+		</div>
 
 		{#if confirmDelete}
 			<div class="lh-confirm" role="alert">
@@ -166,4 +170,10 @@
 	.stash-edit { flex: 1; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-1) 0; }
 	h2.lh-overline { margin: 0; }
 	.confirm-text { margin: 0; color: var(--ink); }
+	/* Phone: one column, as if the wrappers were not there. Desktop: panel + stash left, sessions right. */
+	.split, .col { display: contents; }
+	@media (min-width: 960px) {
+		.split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); align-items: start; }
+		.col { display: flex; flex-direction: column; gap: var(--space-5); }
+	}
 </style>

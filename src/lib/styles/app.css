@@ -20,3 +20,31 @@ html[data-theme='dark'] { color-scheme: dark; }
 .lh-confirm-row { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 .lh-app > .lh-tabbar { position: fixed; left: 0; right: 0; bottom: 0; max-width: 520px; margin: 0 auto; z-index: 10; }
 .lh-confirm-neutral { background: var(--surface-sunk); }
+/* Days of sessions (SessionList): one column of groups, each a heading and its cards. */
+.lh-days { display: flex; flex-direction: column; gap: var(--space-6); }
+.lh-day, .lh-day-cards { display: flex; flex-direction: column; gap: var(--space-3); }
+.lh-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+
+/* Desktop (>= 960px): a left rail replaces the TabBar, pages get room. Both navs are always rendered; CSS picks one. */
+.lh-rail, .lh-desktop-only { display: none; }
+@media (min-width: 960px) {
+	.lh-app { max-width: none; }
+	.lh-app.lh-with-nav { padding-left: 248px; }
+	.lh-app > .lh-tabbar, .lh-fab-wrap, .lh-phone-only { display: none; }
+	.lh-desktop-only { display: contents; }
+	.lh-rail { position: fixed; top: 0; bottom: 0; left: 0; width: 248px; box-sizing: border-box; display: flex; flex-direction: column; gap: var(--space-2); padding: 28px var(--space-4); background: var(--surface-raised); border-right: 1px solid var(--line); overflow-y: auto; z-index: 10; }
+	.lh-rail-brand { padding: 0 var(--space-3) var(--space-5); }
+	.lh-rail-links { display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-4); }
+	.lh-rail-link { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 var(--space-4); border-radius: var(--radius-full); color: var(--ink-muted); font-size: 16px; font-weight: 600; text-decoration: none; }
+	.lh-rail-link:hover { color: var(--ink); background: var(--surface-sunk); }
+	.lh-rail-link.is-on { background: var(--moss-soft); color: var(--moss); }
+	.lh-rail-link:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+	.lh-rail-end { margin-top: auto; }
+	.lh-page { width: 100%; max-width: 1040px; margin: 0 auto; box-sizing: border-box; padding: var(--space-8) 40px; gap: var(--space-8); }
+	.lh-flow { width: 100%; max-width: 520px; margin: 0 auto; }
+	.lh-tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+	/* Journal: cards two across per day. Today: the days side by side. */
+	.lh-day-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); align-items: start; }
+	.lh-days-side { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4) var(--space-6); align-items: start; }
+	.lh-days-side .lh-day-cards { display: flex; align-items: stretch; }
+}

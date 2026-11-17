@@ -5,13 +5,14 @@
 	import Icon from '#lib/ds/Icon.svelte';
 	import OptionGrid from '#lib/ds/OptionGrid.svelte';
 	import TextField from '#lib/ds/TextField.svelte';
-	import { listBreaks, putBreak } from '#lib/db.ts';
+	import { listBreaks, listSessions, putBreak } from '#lib/db.ts';
 	import { t, date } from '#lib/i18n.svelte.ts';
-	import { BREAK_LENGTHS, breakEnd, breakProgress, uid, type Break } from '#lib/model.ts';
+	import { BREAK_LENGTHS, breakEnd, breakProgress, uid, type Break, type Session } from '#lib/model.ts';
 
 	const short = { weekday: 'short', day: 'numeric', month: 'short' } as const;
 
 	let breaks = $state<Break[]>([]);
+	let sessions = $state<Session[]>([]);
 	let now = $state(Date.now());
 	let lengthStr = $state('21');
 	let starting = $state(false); // "Start another break" after a complete one
@@ -19,12 +20,13 @@
 	let noteOpen = $state(false);
 	let noteText = $state('');
 
-	async function load() { breaks = await listBreaks(); now = Date.now(); }
+	async function load() { [breaks, sessions] = await Promise.all([listBreaks(), listSessions()]); now = Date.now(); }
 	onMount(load);
 
 	// Newest break not ended by hand: running, or complete and still shown until another starts.
 	const current = $derived(starting ? undefined : breaks.find((b) => !b.endedAt));
 	const prog = $derived(current && breakProgress(current, now));
+	const during = $derived(current && prog ? sessions.filter((s) => s.at >= current.start && s.at < prog.end).length : 0);
 	const past = $derived(breaks.filter((b) => b !== current && (b.endedAt || breakProgress(b, now).complete)));
 
 	async function save(b: Break) { await putBreak($state.snapshot(b)); await load(); }
@@ -70,6 +72,7 @@
 				{/if}
 			{/snippet}
 		</BreakProgress>
+		{#if during}<p class="muted during">{t('breakAsk.logged', { count: during })}</p>{/if}
 
 		{#if confirmEnd}
 			<div class="lh-confirm lh-confirm-neutral">
@@ -102,7 +105,7 @@
 			{/each}
 		</section>
 	{:else}
-		<p class="lead">{t('breakLead')}</p>
+		<p class="lead">{t('breakAsk.startLead')}</p>
 		<OptionGrid label={t('length')} columns={3} bind:value={lengthStr} options={BREAK_LENGTHS.map((n) => ({ value: String(n), label: t('daysN', { count: n }) }))} />
 		<div class="ends">
 			<Icon name="calendar" size={16} />
@@ -125,6 +128,7 @@
 	h2 { margin: 0; }
 	.body, .lead { margin: 0; }
 	.lead { font-size: 17px; line-height: 26px; color: var(--ink); }
+	.during { margin: calc(-1 * var(--space-2)) 0 0; }
 	.note { display: flex; flex-direction: column; gap: var(--space-1); }
 	.muted { font-size: 14px; color: var(--ink-muted); }
 	.ends { display: flex; align-items: center; gap: var(--space-2); font-size: 14px; line-height: 20px; color: var(--ink-muted); }

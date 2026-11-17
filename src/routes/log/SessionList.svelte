@@ -8,7 +8,8 @@
 	import { amountText, dayLabel } from './format.ts';
 
 	// Sessions grouped by day, each card opens the session for editing.
-	let { sessions }: { sessions: Session[] } = $props();
+	// sideBySide (Today): on desktop the days sit next to each other instead of cards two across.
+	let { sessions, sideBySide = false }: { sessions: Session[]; sideBySide?: boolean } = $props();
 
 	const groups = $derived(groupByDay(sessions));
 	const today = startOfDay(Date.now());
@@ -25,26 +26,30 @@
 	});
 </script>
 
-<section class="lh-section">
-	{#each groups as g, i (g.day)}
-		<h2 class="lh-overline" style:margin={i ? 'var(--space-3) 0 0' : '0'}>{dayLabel(g.day)}</h2>
-		{#each g.sessions as s (s.id)}
-			<a class="lh-session-link" href={resolve('/log/new') + '?edit=' + encodeURIComponent(s.id)} aria-label={`${time(s.at)} · ${s.strainName} · ${amountText(s.amount, s.unit)}`}>
-				<SessionCard
-					time={time(s.at)}
-					ago={g.day === today ? t('today') : date(s.at, { weekday: 'short' })}
-					strain={s.strainName}
-					type={s.strainType}
-					method={t(s.method)}
-					amount={amountText(s.amount, s.unit)}
-					setting={s.setting ? t(s.setting) : undefined}
-					effects={s.effects.map((e) => t(e))}
-					note={s.note}
-					rating={s.rating}
-					photo={s.strainId ? photos[s.strainId] : undefined}
-				/>
-			</a>
-		{/each}
+<section class={['lh-days', sideBySide && 'lh-days-side']}>
+	{#each groups as g (g.day)}
+		<div class="lh-day">
+			<h2 class="lh-overline" style:margin="0">{dayLabel(g.day)}</h2>
+			<div class="lh-day-cards">
+				{#each g.sessions as s (s.id)}
+					<a class="lh-session-link" href={resolve('/log/new') + '?edit=' + encodeURIComponent(s.id)} aria-label={`${time(s.at)} · ${s.strainName} · ${amountText(s.amount, s.unit)}`}>
+						<SessionCard
+							time={time(s.at)}
+							ago={g.day === today ? t('today') : date(s.at, { weekday: 'short' })}
+							strain={s.strainName}
+							type={s.strainType}
+							method={t(s.method)}
+							amount={amountText(s.amount, s.unit)}
+							setting={s.setting ? t(s.setting) : undefined}
+							effects={s.effects.map((e) => t(e))}
+							note={s.note}
+							rating={s.rating}
+							photo={s.strainId ? photos[s.strainId] : undefined}
+						/>
+					</a>
+				{/each}
+			</div>
+		</div>
 	{/each}
 </section>
 

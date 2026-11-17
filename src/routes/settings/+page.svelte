@@ -131,6 +131,7 @@
 <style>
 	.settings { padding-top: var(--space-3); }
 	.back { display: flex; align-items: center; margin-left: -12px; }
+	@media (min-width: 960px) { .settings > * { max-width: 640px; } }
 	.tight { gap: var(--space-2); }
 	h2 { margin: 0; }
 	.body { margin: 0; }

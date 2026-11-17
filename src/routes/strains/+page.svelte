@@ -86,4 +86,8 @@
 	.card-link:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 	.empty { display: flex; flex-direction: column; align-items: center; gap: var(--space-4); }
 	.empty p { margin: 0; }
+	@media (min-width: 960px) {
+		.filters { flex-wrap: wrap; overflow: visible; margin-right: 0; padding-right: 0; }
+		.list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); align-items: start; }
+	}
 </style>

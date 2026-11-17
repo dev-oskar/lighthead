@@ -17,6 +17,7 @@
 		const r = periodRange('week', now, region());
 		return totals(sessions ?? [], r.start, r.end, now);
 	});
+	const weekDays = $derived(Math.round((startOfDay(now) - periodRange('week', now, region()).start) / 86_400_000) + 1); // days of this week so far
 	const trend = $derived(dailyGrams(sessions ?? [], now));
 	const last = $derived(sessions?.[0]);
 	const ago = $derived.by(() => {
@@ -38,10 +39,10 @@
 			<span class="lh-overline">{date(now)}</span>
 			<h1 class="lh-title">{t('today')}</h1>
 		</div>
-		<Button variant="quiet" onclick={() => goto(resolve('/settings'))}>{t('settings')}</Button>
+		<Button variant="quiet" class="lh-phone-only" onclick={() => goto(resolve('/settings'))}>{t('settings')}</Button>
 	</header>
 	{#if sessions}
-		<section style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3)">
+		<section class="lh-tiles">
 			<StatTile
 				label={t('log.thisWeek')}
 				value={num(week.grams, 2)}
@@ -56,9 +57,13 @@
 				tone="tide"
 				note={last ? t('log.agoAt', { time: time(last.at) }) : t('log.none')}
 			/>
+			<div class="lh-desktop-only">
+				<StatTile label={t('thcInMaterial')} value={'≈ ' + num(week.mgThc)} unit={t('mgUnit')} note={t('log.thisWeek')} />
+				<StatTile label={t('daysClear')} value={num(week.daysClear)} tone="tide" note={t('ofTotal', { total: weekDays })} />
+			</div>
 		</section>
 		{#if recent.length}
-			<SessionList sessions={recent} />
+			<SessionList sessions={recent} sideBySide />
 		{:else}
 			<p class="lh-empty">{t('log.emptyToday')}</p>
 		{/if}

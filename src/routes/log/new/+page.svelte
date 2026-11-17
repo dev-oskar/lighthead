@@ -15,11 +15,11 @@
 	import StrainAvatar from '#lib/ds/StrainAvatar.svelte';
 	import TextField from '#lib/ds/TextField.svelte';
 	import { app, loadSettings } from '#lib/app-state.svelte.ts';
-	import { deleteSession, getSession, listSessions, listStrains, saveSession } from '#lib/db.ts';
+	import { deleteSession, getSession, listBreaks, listSessions, listStrains, putBreak, saveSession } from '#lib/db.ts';
 	import { date, num, pct, t, time } from '#lib/i18n.svelte.ts';
 	import {
-		EFFECTS, METHODS, SETTINGS_PLACES, mgThc, prefill, snapshot, uid, unitFor,
-		type Method, type Session, type Strain, type StrainType, type Unit
+		EFFECTS, METHODS, SETTINGS_PLACES, activeBreak, breakProgress, mgThc, prefill, snapshot, uid, unitFor,
+		type Break, type Method, type Session, type Strain, type StrainType, type Unit
 	} from '#lib/model.ts';
 	import { amountText } from '../format.ts';
 
@@ -33,6 +33,9 @@
 	let photos: Record<string, string> = {};
 	let editing = $state<Session>();
 	let saved = $state<Session>();
+	// A running tolerance break: ask before step 1. Not asked on the ?strain= return from New strain,
+	// which is only reachable after this question was answered (or no break was running).
+	let ask = $state<Break>();
 
 	let step = $state<StepN>(1);
 	let dir = $state<'fwd' | 'back'>('fwd');
@@ -108,6 +111,7 @@
 				method = p.method;
 				amount = p.amount;
 				if (known(fromNew)) step = 2;
+				if (!q.has('strain')) ask = activeBreak(await listBreaks(), Date.now());
 			}
 			initial = snapshotState();
 			ready = true;
@@ -156,6 +160,11 @@
 				amount = p.amount;
 			}
 		}
+	}
+
+	async function endBreak() {
+		await putBreak({ ...$state.snapshot(ask!), endedAt: Date.now() });
+		ask = undefined;
 	}
 
 	function defaultAmount(u: Unit) {
@@ -221,7 +230,21 @@
 </script>
 
 <div class="lh-flow">
-	{#if ready}
+	{#if ready && ask}
+		<main>
+			<div class="ask-close"><Button variant="quiet" icon="close" aria-label={t('cancel')} onclick={leave} /></div>
+			<div class="ask">
+				<div class="mark"><Icon name="break" size={36} /></div>
+				<span class="lh-overline">{t('breakLabel')}</span>
+				<h1 class="lh-title">{t('breakAsk.title', { day: breakProgress(ask, Date.now()).day, total: ask.lengthDays })}</h1>
+				<p class="ask-lead">{t('breakAsk.lead')}</p>
+			</div>
+		</main>
+		<div class="ask-actions">
+			<Button variant="primary" size="lg" block onclick={() => (ask = undefined)}>{t('breakAsk.keep')}</Button>
+			<Button variant="secondary" size="lg" block onclick={endBreak}>{t('breakAsk.end')}</Button>
+		</div>
+	{:else if ready}
 		<main>
 			{#key step}
 				<Step direction={dir}>
@@ -344,7 +367,11 @@
 	.tight { gap: var(--space-2); }
 	.lh-confirm-text { margin: 0; color: var(--ink); }
 	.saved { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-3); padding: 144px var(--space-2) 0; }
-	.saved-mark { width: 72px; height: 72px; border-radius: 22px 4px 22px 4px; background: var(--tide-soft); color: var(--tide); display: flex; align-items: center; justify-content: center; }
+	.ask-close { display: flex; margin-left: -12px; }
+	.ask { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--space-4); padding-top: 48px; }
+	.ask-lead { margin: 0; font-size: 17px; line-height: 26px; color: var(--ink-muted); }
+	.ask-actions { display: flex; flex-direction: column; gap: var(--space-3); padding-bottom: var(--space-6); }
+	.saved-mark, .mark { width: 72px; height: 72px; border-radius: 22px 4px 22px 4px; background: var(--tide-soft); color: var(--tide); display: flex; align-items: center; justify-content: center; }
 	.saved .lh-title { margin-top: var(--space-2); }
 	.saved-line { margin: 0; color: var(--ink); }
 	.saved-edit { margin-top: var(--space-4); }
