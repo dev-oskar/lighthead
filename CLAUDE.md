@@ -1,10 +1,18 @@
 # LightHead — notes for Claude
 
-Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA, IndexedDB. **No React, no virtual DOM** (owner's firm preference).
+Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA, IndexedDB. **No React, no virtual DOM** (owner's firm preference). What it does and the file map: `README.md`.
+
+## How the owner likes to work
+- Ask before guessing when a requirement is unclear; propose a sensible default with the question.
+- New screens are designed on the screens canvas first and approved there before building (small field additions to existing screens can skip this).
+- Larger features: an implementer agent per independent part, then a reviewer agent; then run all checks yourself and look at screenshots (phone 390×844 and desktop 1280×800) before committing.
+- `master` is production (every push deploys). Run check, unit and e2e first; reference issues in commits.
 
 ## Commands
 - `npm run check` (svelte-check), `npx vitest run` (unit), `npx playwright test --workers=1` (e2e; builds + serves on :4173 itself).
 - E2E tests import `test` from `e2e/fixtures.ts`, which marks onboarding as done; only `e2e/onboarding.e2e.ts` uses the plain Playwright `test` for a first run.
+- E2E pitfalls: a `NumberField` label also names its −/+ buttons, so use `getByLabel('Temperature', { exact: true })`; onboarding tests set an iPhone or desktop user agent because the install step depends on the platform; after changing a setting, move on through the tab bar (not `page.goto`) so the IndexedDB write finishes; wait for a saved state before `page.reload()`.
+- README screenshots: `scripts/readme-screenshots.mjs` (sample data only).
 - Don't leave a `vite preview` running on :4173 while Playwright runs: its rebuild replaces `build/` and kills that server. To stop a preview server use `pkill -f "[v]ite preview"` (the `[v]` keeps pkill from matching its own shell).
 
 ## SvelteKit 3 specifics
@@ -17,6 +25,13 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 
 ## Deploy
 - Cloudflare Workers, static assets only (`wrangler.jsonc`); every push to `master` deploys to https://use.lighthead.app (custom domains are listed in `wrangler.jsonc`; lighthead.app is reserved for the landing page, #10). Headers live in `static/_headers` (the service worker skips that file when precaching).
+
+## Data
+- IndexedDB `lighthead` version 1 (`src/lib/db.ts`): stores `strains`, `sessions` (indexes `at`, `strainId`), `breaks`, `settings` (one record, key `app`).
+- New fields are optional and need no migration. Bump the DB version only for new stores or indexes, inside `upgrade()`.
+- Canonical units: grams (flower), mg THC (edibles), °C (`tempC`, never rounded on save). Convert only for display and input.
+- Backups are `ExportFile` version 1 (plain JSON, photos as data URLs). Old backups must keep importing; a breaking format change needs version 2 plus an importer for version 1.
+- Settings remember last-used defaults on new sessions only (`saveSession`): `lastStrainId`, `lastMethod`, `lastTempC`, `amountByStrain[id]` (amount, unit, tempC).
 
 ## Product rules (from the design system brand book, `design/ds/README.md`)
 - Data never leaves the device. No third-party requests of any kind (fonts, CDNs, analytics). `e2e/offline.e2e.ts` enforces it.
