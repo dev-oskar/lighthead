@@ -16,7 +16,7 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 - The service worker must not `skipWaiting()` on install: a new version waits for the Reload notice (`src/lib/update.svelte.ts`). Playwright can't intercept the worker's update check, so test that flow by hand with two builds served from a swapped folder.
 
 ## Deploy
-- Cloudflare Workers, static assets only (`wrangler.jsonc`); every push to `master` deploys to https://lighthead.thematrixadmin.workers.dev. Headers live in `static/_headers` (the service worker skips that file when precaching).
+- Cloudflare Workers, static assets only (`wrangler.jsonc`); every push to `master` deploys to https://use.lighthead.app (custom domains are listed in `wrangler.jsonc`; lighthead.app is reserved for the landing page, #10). Headers live in `static/_headers` (the service worker skips that file when precaching).
 
 ## Product rules (from the design system brand book, `design/ds/README.md`)
 - Data never leaves the device. No third-party requests of any kind (fonts, CDNs, analytics). `e2e/offline.e2e.ts` enforces it.

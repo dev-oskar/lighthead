@@ -5,5 +5,10 @@
 	"assets": {
 		"directory": "./build",
 		"not_found_handling": "single-page-application"
-	}
+	},
+	// The app's home is use.lighthead.app. lighthead.app serves it too until the landing page (#10) takes it over.
+	"routes": [
+		{ "pattern": "use.lighthead.app", "custom_domain": true },
+		{ "pattern": "lighthead.app", "custom_domain": true }
+	]
 }
