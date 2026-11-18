@@ -111,6 +111,8 @@ The end-to-end suite includes an offline test that fails if the app contacts any
 
 [use.lighthead.app](https://use.lighthead.app) is served by Cloudflare Workers as static assets (`wrangler.jsonc`). Every push to `master` deploys. Settings shows the build time as the version.
 
+The landing page at [lighthead.app](https://lighthead.app) is plain HTML in `landing/` (no JavaScript, en/de/pl), deployed as a second Worker (`landing/wrangler.jsonc`). Preview it with `npm run landing` (http://localhost:4300).
+
 ## Licences
 
 LightHead is free software under the GNU Affero General Public License v3.0 or later (`LICENSE`). If you run a modified version for others, including as a hosted service, you must publish your changes under the same licence.

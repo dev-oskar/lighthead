@@ -24,7 +24,8 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 - The service worker must not `skipWaiting()` on install: a new version waits for the Reload notice (`src/lib/update.svelte.ts`). Playwright can't intercept the worker's update check, so test that flow by hand with two builds served from a swapped folder.
 
 ## Deploy
-- Cloudflare Workers, static assets only (`wrangler.jsonc`); every push to `master` deploys to https://use.lighthead.app (custom domains are listed in `wrangler.jsonc`; lighthead.app is reserved for the landing page, #10). Headers live in `static/_headers` (the service worker skips that file when precaching).
+- Cloudflare Workers, static assets only (`wrangler.jsonc`); every push to `master` deploys to https://use.lighthead.app (custom domains are listed in `wrangler.jsonc`).
+- Landing page https://lighthead.app: `landing/` (static, no JavaScript, en/de/pl from `landing/src/strings.mjs`), its own Worker `lighthead-landing` (`landing/wrangler.jsonc`), built from the repo root with `npm run landing:build`; `npm run landing` previews on :4300. Its claims follow the same privacy-claims rule as the app. Headers live in `static/_headers` (the service worker skips that file when precaching).
 
 ## Data
 - IndexedDB `lighthead` version 1 (`src/lib/db.ts`): stores `strains`, `sessions` (indexes `at`, `strainId`), `breaks`, `settings` (one record, key `app`).
