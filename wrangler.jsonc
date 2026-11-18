@@ -6,6 +6,9 @@
 		"directory": "./build",
 		"not_found_handling": "single-page-application"
 	},
+	// Only the custom domains below: no *.workers.dev address and no preview URLs, so every request goes through the lighthead.app zone.
+	"workers_dev": false,
+	"preview_urls": false,
 	// The app's home is use.lighthead.app. lighthead.app serves it too until the landing page (#10) takes it over.
 	"routes": [
 		{ "pattern": "use.lighthead.app", "custom_domain": true },
