@@ -198,6 +198,20 @@
       "w": 1280,
       "h": 800,
       "title": "Onboarding 3 · desktop"
+    },
+    "Landing-Desktop.dc.html": {
+      "x": 0,
+      "y": 8160,
+      "w": 1280,
+      "h": 3720,
+      "title": "Landing page · desktop (lighthead.app)"
+    },
+    "Landing-Phone.dc.html": {
+      "x": 1360,
+      "y": 8160,
+      "w": 390,
+      "h": 5200,
+      "title": "Landing page · phone"
     }
   },
   "order": [
@@ -227,7 +241,9 @@
     "Onboarding-3-Strain.dc.html",
     "Onboarding-Desktop-1-Welcome.dc.html",
     "Onboarding-Desktop-2-Install.dc.html",
-    "Onboarding-Desktop-3-Strain.dc.html"
+    "Onboarding-Desktop-3-Strain.dc.html",
+    "Landing-Desktop.dc.html",
+    "Landing-Phone.dc.html"
   ],
   "notes": {
     "row1": {
@@ -278,6 +294,13 @@
       "text": "First run on desktop",
       "kind": "title1",
       "maxW": 3920
+    },
+    "row8": {
+      "x": 0,
+      "y": 7860,
+      "text": "Landing page (lighthead.app)",
+      "kind": "title1",
+      "maxW": 1750
     }
   },
   "designSystems": [

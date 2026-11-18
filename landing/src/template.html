@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="{{canonical}}">
+{{alternates}}
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/fonts/AtkinsonHyperlegibleNext-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/BricolageGrotesque-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/landing.css">
+</head>
+<body>
+<header class="top">
+	<span class="lh-title">LightHead</span>
+	<nav class="top-nav" aria-label="{{navLabel}}">
+		<a class="desk" href="https://use.lighthead.app/privacy">{{navPrivacy}}</a>
+		<a class="desk" href="https://use.lighthead.app/help">{{navQuestions}}</a>
+		<a class="desk" href="https://github.com/dev-oskar/lighthead">{{navSource}}</a>
+		{{langs}}
+		<a class="lh-btn lh-btn-primary lh-btn-lg desk" href="https://use.lighthead.app">{{openApp}}</a>
+	</nav>
+</header>
+<main>
+<section class="hero">
+	<div class="hero-text">
+		<p class="lh-overline">{{overline}}</p>
+		<h1 class="lh-display">{{h1}}</h1>
+		<p class="lead muted">{{lead}}</p>
+		<div class="actions">
+			<a class="lh-btn lh-btn-primary lh-btn-lg" href="https://use.lighthead.app">{{openApp}}</a>
+			<a class="lh-btn lh-btn-secondary lh-btn-lg" href="https://use.lighthead.app/privacy">{{icon:lock:24}}{{dataBtn}}</a>
+		</div>
+		<p class="small muted">{{meta}}<span class="desk-inline">{{metaLangs}}</span></p>
+	</div>
+	<div class="hero-shots">
+		<img class="shot shot-today" src="/img/phone-today.png" width="780" height="1688" alt="{{altToday}}">
+		<img class="shot shot-log" src="/img/phone-quick-log.png" width="780" height="1688" alt="{{altLog}}">
+	</div>
+</section>
+
+<section class="block">
+	<h2>{{doesTitle}}</h2>
+	<div class="grid grid-4">
+		<div class="card"><div class="mark">{{icon:plus:24}}</div><h3>{{f1t}}</h3><p class="muted">{{f1b}}</p><p class="fact">{{f1f}}</p></div>
+		<div class="card"><div class="mark">{{icon:leaf:24}}</div><h3>{{f2t}}</h3><p class="muted">{{f2b}}</p><p class="fact">{{f2f}}</p></div>
+		<div class="card"><div class="mark">{{icon:break:24}}</div><h3>{{f3t}}</h3><p class="muted">{{f3b}}</p><p class="fact">{{f3f}}</p></div>
+		<div class="card"><div class="mark">{{icon:stats:24}}</div><h3>{{f4t}}</h3><p class="muted">{{f4b}}</p><p class="fact">{{f4f}}</p></div>
+	</div>
+</section>
+
+<section class="band">
+	<div class="privacy">
+		<p class="lh-overline">{{privOver}}</p>
+		<h2>{{privTitle}}</h2>
+		<p class="muted privacy-body desk">{{privBody}}</p>
+		<p class="muted privacy-body phone">{{privBodyShort}}</p>
+		<ul class="checks">
+			<li>{{icon:check:24}}<span>{{chk1}}</span></li>
+			<li>{{icon:check:24}}<span>{{chk2}}</span></li>
+			<li>{{icon:check:24}}<span>{{chk3}}</span></li>
+			<li>{{icon:check:24}}<span>{{chk4}}</span></li>
+			<li>{{icon:check:24}}<span>{{chk5}}</span></li>
+		</ul>
+		<p class="privacy-links"><a href="https://use.lighthead.app/privacy">{{privRead}}</a><span class="desk-inline"> · <a href="https://github.com/dev-oskar/lighthead">{{privCode}}</a></span></p>
+	</div>
+</section>
+
+<section class="block devices desk">
+	<h2>{{devTitle}}</h2>
+	<p class="sub muted">{{devBody}}</p>
+	<img class="shot shot-wide" src="/img/desktop-stats.png" width="2560" height="1600" loading="lazy" alt="{{altStats}}">
+</section>
+
+<section class="block install">
+	<h2>{{instTitle}}</h2>
+	<p class="sub muted">{{instBody}}</p>
+	<div class="grid grid-3">
+		<div class="card"><h3>{{iosT}}</h3><p class="muted">{{iosB}}</p></div>
+		<div class="card"><h3>{{andT}}</h3><p class="muted">{{andB}}</p></div>
+		<div class="card"><h3>{{macT}}</h3><p class="muted">{{macB}}</p></div>
+	</div>
+</section>
+
+<section class="block">
+	<h2>{{faqTitle}}</h2>
+	<div class="faq card">
+		<details open><summary><span>{{q1}}</span>{{icon:chevron:20}}</summary><p>{{a1}}</p></details>
+		<details><summary><span>{{q2}}</span>{{icon:chevron:20}}</summary><p>{{a2}}</p></details>
+		<details><summary><span>{{q3}}</span>{{icon:chevron:20}}</summary><p>{{a3}}</p></details>
+		<details><summary><span>{{q4}}</span>{{icon:chevron:20}}</summary><p>{{a4}}</p></details>
+	</div>
+	<p><a href="https://use.lighthead.app/help">{{faqAll}}</a></p>
+</section>
+</main>
+
+<footer class="foot">
+	<p><span class="lh-title">LightHead</span> <span class="muted">· {{footNote}}</span></p>
+	<nav aria-label="{{footLabel}}">
+		<a href="https://github.com/dev-oskar/lighthead">{{navSource}}</a>
+		<a href="https://use.lighthead.app/privacy">{{navPrivacy}}</a>
+		<a href="https://github.com/dev-oskar/lighthead/blob/master/SECURITY.md">{{footSecurity}}</a>
+		{{langs}}
+	</nav>
+</footer>
+</body>
+</html>

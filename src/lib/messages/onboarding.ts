@@ -56,7 +56,7 @@ export const messages: Record<string, Messages> = {
 		'onboarding.offline': 'Funktioniert ohne Internet, sobald es installiert ist.',
 		'onboarding.install': 'Installieren',
 		'onboarding.strainTitle': 'Was hast du zu Hause?',
-		'onboarding.strainSub': 'Leg eine Sorte einmal mit THC und CBD an. Danach brauchst du zum Eintragen nur drei Tipps.',
+		'onboarding.strainSub': 'Leg eine Sorte einmal mit THC und CBD an. Danach reichen drei Fingertipps zum Eintragen.',
 		'onboarding.yourStrain': 'Deine Sorte',
 		'onboarding.cardTitle': 'Name, Art und Etikett',
 		'onboarding.cardBody': 'THC und CBD von der Packung. Ein Foto ist optional.',

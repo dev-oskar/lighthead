@@ -1,0 +1,157 @@
+/* LightHead landing page. Tokens and button styles copied from src/lib/styles/tokens.css and components.css.
+   No JavaScript, so dark mode follows prefers-color-scheme instead of [data-theme]. */
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("fonts/AtkinsonHyperlegibleNext-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("fonts/AtkinsonHyperlegibleNext-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Next"; src: url("fonts/AtkinsonHyperlegibleNext-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Atkinson Hyperlegible Mono"; src: url("fonts/AtkinsonHyperlegibleMono-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Bricolage Grotesque"; src: url("fonts/BricolageGrotesque-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+
+:root {
+  color-scheme: light dark;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-12: 48px;
+  --radius-xs: 4px; --radius-md: 14px; --radius-lg: 22px; --radius-full: 9999px;
+  --surface: #f3f5ef; --surface-raised: #fcfdfa; --surface-sunk: #e7ebe2;
+  --line: #d3dacd; --line-strong: #7d8a79;
+  --ink: #18231c; --ink-muted: #536057;
+  --moss: #3b6b47; --moss-strong: #2c5236; --moss-soft: #dce8d8; --on-moss: #f5faf3;
+  --tide: #2c6580;
+  --shadow-lg: 0 6px 12px #18231c12, 0 16px 32px -4px #18231c24;
+  --focus-ring: 0 0 0 2px #f3f5ef, 0 0 0 4px #2c6580;
+  --gutter: 16px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface: #121814; --surface-raised: #1a221c; --surface-sunk: #0c110e;
+    --line: #2b362e; --line-strong: #62726a;
+    --ink: #e6ece4; --ink-muted: #a3b0a5;
+    --moss: #8cc49a; --moss-strong: #a9d8b5; --moss-soft: #1f3325; --on-moss: #0f1f13;
+    --tide: #86c1db;
+    --shadow-lg: 0 16px 32px -4px #000000cc;
+    --focus-ring: 0 0 0 2px #121814, 0 0 0 4px #86c1db;
+  }
+}
+
+html { background: var(--surface); }
+body { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 24px; background: var(--surface); color: var(--ink); -webkit-font-smoothing: antialiased; overflow-wrap: break-word; hyphens: auto; }
+h1, h2, h3, p, ul { margin: 0; }
+a { color: var(--moss); text-underline-offset: 3px; }
+a:hover { color: var(--moss-strong); }
+a:focus-visible, summary:focus-visible { outline: 2px solid transparent; box-shadow: var(--focus-ring); border-radius: 4px; }
+img { max-width: 100%; height: auto; }
+.muted { color: var(--ink-muted); }
+.small { font-size: 14px; }
+
+/* Design-system type and buttons (components.css, app.css) */
+.lh-icon { flex: none; display: block; }
+.lh-overline { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
+.lh-title, .lh-display, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--ink); }
+.lh-title { font-size: 22px; line-height: 32px; letter-spacing: -0.01em; }
+.lh-display { font-size: 38px; line-height: 42px; letter-spacing: -0.02em; text-wrap: balance; }
+h2 { font-size: 28px; line-height: 34px; text-wrap: balance; }
+h3 { font-size: 20px; line-height: 26px; }
+.lh-btn { font: inherit; font-size: 15px; font-weight: 600; letter-spacing: .01em; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: 44px; line-height: 20px; text-align: center; padding: var(--space-1) var(--space-5); border-radius: var(--radius-full); border: 1.5px solid transparent; text-decoration: none; box-sizing: border-box; transition: background-color .15s, border-color .15s; -webkit-tap-highlight-color: transparent; }
+.lh-btn:focus-visible { border-radius: var(--radius-full); }
+.lh-btn-lg { min-height: 56px; padding: 0 var(--space-6); font-size: 16px; }
+.lh-btn-primary, .lh-btn-primary:hover { color: var(--on-moss); }
+.lh-btn-primary { background: var(--moss); }
+.lh-btn-primary:hover { background: var(--moss-strong); }
+.lh-btn-secondary, .lh-btn-secondary:hover { background: var(--surface-raised); color: var(--ink); border-color: var(--line-strong); }
+.lh-btn-secondary:hover { background: var(--moss-soft); }
+
+/* Page sections: content is at most 1120px wide, centred, with side gutters */
+.top, .hero, .block, .privacy, .foot { padding-inline: max(var(--gutter), (100% - 1120px) / 2); }
+.top { padding-block: 16px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.top-nav, .foot nav { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+nav a:not(.lh-btn) { color: var(--ink-muted); text-decoration: none; font-weight: 600; }
+nav a:not(.lh-btn):hover { color: var(--ink); text-decoration: underline; }
+.lang { font-size: 14px; font-weight: 600; color: var(--ink-muted); white-space: nowrap; }
+.lang a { display: inline-block; padding: 10px 2px; }
+.lang a[aria-current] { color: var(--moss); }
+
+.hero { padding-block: 24px 48px; display: flex; flex-direction: column; gap: 20px; }
+.hero-text { display: flex; flex-direction: column; gap: 20px; }
+.lead { font-size: 18px; line-height: 27px; }
+.actions { display: flex; flex-direction: column; gap: 12px; }
+.shot { display: block; border: 1px solid var(--line); border-radius: 28px 6px 28px 6px; box-shadow: var(--shadow-lg); background: var(--surface); box-sizing: border-box; }
+.shot-today { display: none; }
+.shot-log { width: 260px; margin: 12px auto 0; }
+
+.block { padding-block: 0 56px; display: flex; flex-direction: column; gap: 32px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.card { display: flex; flex-direction: column; gap: 12px; padding: 24px; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 16px; }
+.mark { width: 48px; height: 48px; border-radius: 14px 4px 14px 4px; background: var(--moss-soft); color: var(--moss); display: flex; align-items: center; justify-content: center; }
+.fact { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--ink); padding-top: 12px; border-top: 1px solid var(--line); margin-top: auto; }
+.sub { font-size: 18px; line-height: 28px; max-width: 620px; }
+
+.band { background: var(--surface-raised); border-block: 1px solid var(--line); margin-bottom: 48px; }
+.privacy { padding-block: 48px; display: flex; flex-direction: column; gap: 20px; }
+.privacy-body { font-size: 17px; line-height: 26px; }
+.checks { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.checks li { display: flex; gap: 12px; align-items: flex-start; }
+.checks .lh-icon { color: var(--tide); margin-top: 2px; }
+
+.faq { padding: 0; gap: 0; }
+.faq details + details { border-top: 1px solid var(--line); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; font-weight: 600; cursor: pointer; list-style: none; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary .lh-icon { color: var(--ink-muted); }
+.faq details[open] summary .lh-icon { transform: rotate(90deg); }
+.faq details p { padding: 0 24px 20px; color: var(--ink-muted); }
+@media (prefers-reduced-motion: no-preference) {
+  .faq summary .lh-icon { transition: transform .15s ease-out; }
+}
+
+.foot { padding-block: 24px 40px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 16px; }
+.foot .lh-title { font-size: 20px; }
+.foot nav { gap: 24px; }
+
+/* Phone: things only the desktop layout shows */
+.desk, .desk-inline { display: none; }
+
+@media (min-width: 860px) {
+  :root { --gutter: clamp(40px, 6.25vw, 80px); }
+  .desk { display: revert; }
+  .block.desk { display: flex; }
+  .desk-inline { display: inline; }
+  .phone { display: none; }
+  .top { padding-block: 24px; }
+  .top .lh-title { font-size: 26px; }
+  .top-nav .lh-btn { display: inline-flex; }
+
+  .hero { padding-block: 56px 88px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 56px; align-items: center; }
+  .hero-text { gap: 24px; }
+  .lh-display { font-size: clamp(44px, 4.7vw, 60px); line-height: 1.07; }
+  .lead { font-size: 20px; line-height: 30px; }
+  .actions { flex-direction: row; flex-wrap: wrap; }
+  .hero-shots { position: relative; aspect-ratio: 507 / 640; }
+  .shot-today, .shot-log { display: block; position: absolute; width: 55%; margin: 0; }
+  .shot-today { left: 0; top: 6.25%; }
+  .shot-log { right: 0; top: 0; }
+
+  h2 { font-size: 36px; line-height: 42px; }
+  .block { padding-block: 0 96px; }
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .band { margin-bottom: 0; }
+  .privacy { padding-block: 88px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 64px; row-gap: 20px; align-content: start; }
+  .privacy > * { grid-column: 1; }
+  .privacy h2 { font-size: 40px; line-height: 46px; }
+  .privacy-body { font-size: 18px; line-height: 28px; }
+  .privacy .checks { grid-column: 2; grid-row: 1 / span 4; padding-top: 44px; gap: 16px; font-size: 18px; line-height: 26px; }
+
+  .devices { padding-block: 96px; align-items: center; text-align: center; gap: 28px; }
+  .devices .sub { max-width: 560px; }
+  .shot-wide { width: 1000px; border-radius: 20px; }
+
+  .foot { padding-block: 32px 48px; flex-direction: row; justify-content: space-between; align-items: center; }
+}
+@media (min-width: 1100px) {
+  .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* 404.html */
+.notfound { padding-block: 48px; max-width: 640px; }
