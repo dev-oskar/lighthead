@@ -52,4 +52,6 @@ Updates: a new version waits until the person taps Reload on the in-app notice (
 
 ## Licences
 
+LightHead is free software under the GNU Affero General Public License v3.0 or later (`LICENSE`). If you run a modified version for others, including as a hosted service, you must publish your changes under the same licence.
+
 Fonts (Atkinson Hyperlegible Next/Mono, Bricolage Grotesque) are under the SIL Open Font License 1.1, shipped in `static/licenses/fonts-OFL.txt`.

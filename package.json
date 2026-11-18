@@ -31,5 +31,6 @@
 	},
 	"dependencies": {
 		"idb": "^8.0.4"
-	}
+	},
+	"license": "AGPL-3.0-or-later"
 }
