@@ -10,6 +10,7 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 
 ## Commands
 - `npm run check` (svelte-check), `npx vitest run` (unit), `npx playwright test --workers=1` (e2e; builds + serves on :4173 itself).
+- GitHub Actions (`.github/workflows/ci.yml`) runs check, unit, e2e and the landing build on every push and PR. Cloudflare deploys independently, so a red run means production needs a look; the landing page's "checked on every change" claim depends on this workflow.
 - E2E tests import `test` from `e2e/fixtures.ts`, which marks onboarding as done; only `e2e/onboarding.e2e.ts` uses the plain Playwright `test` for a first run.
 - E2E pitfalls: a `NumberField` label also names its −/+ buttons, so use `getByLabel('Temperature', { exact: true })`; onboarding tests set an iPhone or desktop user agent because the install step depends on the platform; after changing a setting, move on through the tab bar (not `page.goto`) so the IndexedDB write finishes; wait for a saved state before `page.reload()`.
 - README screenshots: `scripts/readme-screenshots.mjs` (sample data only).
