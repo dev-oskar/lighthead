@@ -46,7 +46,7 @@ The end-to-end suite includes an offline test that asserts the app never contact
 
 ## Deploy
 
-Netlify builds with `npm run build` and publishes `build/` (see `netlify.toml`: SPA fallback, no-cache for the service worker, strict Content-Security-Policy).
+Live at https://light-head.netlify.app/. Netlify builds with `npm run build` and publishes `build/` (see `netlify.toml`: SPA fallback, no-cache for the service worker, strict Content-Security-Policy).
 
 ## Licences
 
