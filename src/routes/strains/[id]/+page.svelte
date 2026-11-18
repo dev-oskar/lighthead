@@ -16,6 +16,7 @@
 	import { prepareStrainPhoto } from '#lib/photo.ts';
 	import { date, num, pct, t, time } from '#lib/i18n.svelte.ts';
 	import { grams } from '../format.ts';
+	import { methodText } from '../../log/format.ts';
 
 	const id = $derived(page.params.id ?? '');
 	let strain = $state.raw<Strain | undefined>();
@@ -162,7 +163,7 @@
 						ago={date(s.at, { weekday: 'short', day: 'numeric', month: 'short' })}
 						strain={s.strainName}
 						type={s.strainType}
-						method={t(s.method)}
+						method={methodText(s)}
 						amount={amount(s)}
 						setting={s.setting ? t(s.setting) : undefined}
 						effects={s.effects.map((e) => t(e))}

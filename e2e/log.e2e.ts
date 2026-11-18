@@ -35,11 +35,15 @@ test('quick log with prefilled defaults', async ({ page }) => {
 	await expect(page.getByRole('radio', { name: /Northern Lights/ })).toHaveAttribute('aria-checked', 'true');
 	await page.getByRole('button', { name: 'Continue' }).click();
 	await expect(page.getByText('How much?')).toBeVisible();
+	// Vape (the default method) asks for the temperature, prefilled with 190 °C.
+	await expect(page.getByLabel('Temperature', { exact: true })).toHaveValue('190');
+	await page.getByLabel('Temperature', { exact: true }).fill('200');
+	await page.getByLabel('Temperature', { exact: true }).blur();
 	await page.getByRole('button', { name: 'Continue' }).click();
 	await page.getByRole('button', { name: 'Skip' }).click();
 
 	await expect(page.getByText('Session saved')).toBeVisible();
-	await expect(page.getByText(/Northern Lights · 0\.15\s?g/)).toBeVisible();
+	await expect(page.getByText(/Northern Lights · 0\.15\s?g · Vape · 200\s?°C/)).toBeVisible();
 	await page.getByRole('button', { name: 'Done' }).click();
 
 	await expect(page).toHaveURL(/\/$/);
@@ -47,4 +51,12 @@ test('quick log with prefilled defaults', async ({ page }) => {
 	await page.goto('/log');
 	await expect(page.getByText('1 session')).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Northern Lights' })).toBeVisible();
+	await expect(page.getByText(/Vape · 200\s?°C/)).toBeVisible();
+
+	// Next time the temperature starts where it was left; other methods don't ask for it.
+	await page.goto('/log/new');
+	await page.getByRole('button', { name: 'Continue' }).click();
+	await expect(page.getByLabel('Temperature', { exact: true })).toHaveValue('200');
+	await page.getByRole('radio', { name: /Joint/ }).click();
+	await expect(page.getByLabel('Temperature', { exact: true })).toHaveCount(0);
 });

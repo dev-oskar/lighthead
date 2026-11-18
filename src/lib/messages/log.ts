@@ -11,7 +11,7 @@ export const messages: Record<string, Messages> = {
 		'log.changeTime': 'Change time', 'log.time': 'Time',
 		'log.newStrain': 'New strain', 'log.noStrains': 'No strains yet. Add one, then log your session.',
 		'log.discardTitle': 'Discard this session?', 'log.discard': 'Discard', 'log.keepLogging': 'Keep logging',
-		'log.notePh': 'Anything worth remembering?', 'log.editSession': 'Edit session', 'log.deleteSession': 'Delete session'
+		'log.notePh': 'Anything worth remembering?', 'log.temperature': 'Temperature', 'log.editSession': 'Edit session', 'log.deleteSession': 'Delete session'
 	},
 	de: {
 		'log.journal': 'Tagebuch', 'log.logSession': 'Sitzung eintragen', 'log.yesterday': 'Gestern',
@@ -22,7 +22,7 @@ export const messages: Record<string, Messages> = {
 		'log.changeTime': 'Zeit ändern', 'log.time': 'Zeit',
 		'log.newStrain': 'Neue Sorte', 'log.noStrains': 'Noch keine Sorten. Leg eine an, dann trag deine Sitzung ein.',
 		'log.discardTitle': 'Diese Sitzung verwerfen?', 'log.discard': 'Verwerfen', 'log.keepLogging': 'Weiter eintragen',
-		'log.notePh': 'Etwas, das du dir merken willst?', 'log.editSession': 'Sitzung bearbeiten', 'log.deleteSession': 'Sitzung löschen'
+		'log.notePh': 'Etwas, das du dir merken willst?', 'log.temperature': 'Temperatur', 'log.editSession': 'Sitzung bearbeiten', 'log.deleteSession': 'Sitzung löschen'
 	},
 	pl: {
 		'log.journal': 'Dziennik', 'log.logSession': 'Dodaj sesję', 'log.yesterday': 'Wczoraj',
@@ -33,6 +33,6 @@ export const messages: Record<string, Messages> = {
 		'log.changeTime': 'Zmień godzinę', 'log.time': 'Godzina',
 		'log.newStrain': 'Nowa odmiana', 'log.noStrains': 'Nie ma jeszcze odmian. Dodaj jedną, a potem zapisz sesję.',
 		'log.discardTitle': 'Odrzucić tę sesję?', 'log.discard': 'Odrzuć', 'log.keepLogging': 'Wróć do sesji',
-		'log.notePh': 'Coś wartego zapamiętania?', 'log.editSession': 'Edytuj sesję', 'log.deleteSession': 'Usuń sesję'
+		'log.notePh': 'Coś wartego zapamiętania?', 'log.temperature': 'Temperatura', 'log.editSession': 'Edytuj sesję', 'log.deleteSession': 'Usuń sesję'
 	}
 };

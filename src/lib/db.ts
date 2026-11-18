@@ -61,9 +61,11 @@ export async function saveSession(s: Session) {
 	if (!old) {
 		const set = (await tx.objectStore('settings').get('app')) ?? structuredClone(DEFAULT_SETTINGS);
 		set.lastMethod = s.method;
+		if (s.tempC != null) set.lastTempC = s.tempC;
 		if (s.strainId) {
 			set.lastStrainId = s.strainId;
-			set.amountByStrain[s.strainId] = { amount: s.amount, unit: s.unit };
+			const prev = set.amountByStrain[s.strainId];
+			set.amountByStrain[s.strainId] = { amount: s.amount, unit: s.unit, tempC: s.tempC ?? prev?.tempC };
 		}
 		await tx.objectStore('settings').put(set, 'app');
 	}

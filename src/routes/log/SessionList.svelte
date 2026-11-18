@@ -5,7 +5,7 @@
 	import { listStrains } from '#lib/db.ts';
 	import { date, t, time } from '#lib/i18n.svelte.ts';
 	import { groupByDay, startOfDay, type Session } from '#lib/model.ts';
-	import { amountText, dayLabel } from './format.ts';
+	import { amountText, dayLabel, methodText } from './format.ts';
 
 	// Sessions grouped by day, each card opens the session for editing.
 	// sideBySide (Today): on desktop the days sit next to each other instead of cards two across.
@@ -38,7 +38,7 @@
 							ago={g.day === today ? t('today') : date(s.at, { weekday: 'short' })}
 							strain={s.strainName}
 							type={s.strainType}
-							method={t(s.method)}
+							method={methodText(s)}
 							amount={amountText(s.amount, s.unit)}
 							setting={s.setting ? t(s.setting) : undefined}
 							effects={s.effects.map((e) => t(e))}

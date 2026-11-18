@@ -28,6 +28,7 @@
 	let name = $state('');
 	let type = $state<StrainType>('hybrid');
 	let breeder = $state('');
+	let note = $state('');
 	let thc = $state(18);
 	let cbd = $state(0.5);
 	let terpenes = $state<string[]>([]);
@@ -43,6 +44,7 @@
 			original = s;
 			({ name, type, thc, cbd, photo } = s);
 			breeder = s.breeder ?? '';
+			note = s.note ?? '';
 			terpenes = [...s.terpenes];
 		});
 
@@ -54,8 +56,8 @@
 
 	const dirty = $derived(
 		original
-			? name !== original.name || type !== original.type || breeder !== (original.breeder ?? '')
-			: !!(name.trim() || breeder.trim())
+			? name !== original.name || type !== original.type || breeder !== (original.breeder ?? '') || note !== (original.note ?? '')
+			: !!(name.trim() || breeder.trim() || note.trim())
 	);
 
 	function go(n: number) {
@@ -99,6 +101,7 @@
 			name: name.trim(),
 			type,
 			breeder: breeder.trim() || undefined,
+			note: note.trim() || undefined,
 			thc,
 			cbd,
 			terpenes: [...terpenes],
@@ -161,6 +164,7 @@
 						/>
 						<OptionGrid label={t('strainType')} columns={2} options={typeOptions} bind:value={() => type, (v) => (type = v as StrainType)} />
 						<TextField label={t('breederOptional')} placeholder={t('breederPh')} autocomplete="off" bind:value={breeder} />
+						<TextField label={t('noteOptional')} hint={t('noteHint')} placeholder={t('strainNotePh')} multiline bind:value={note} />
 					{:else if step === 2}
 						<NumberField label={t('thc')} unit="%" step={0.5} decimals={1} min={0} max={100} bind:value={thc} />
 						<NumberField label={t('cbd')} unit="%" step={0.5} decimals={1} min={0} max={100} bind:value={cbd} />

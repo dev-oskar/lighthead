@@ -19,10 +19,10 @@
 	import { deleteSession, getSession, listBreaks, listSessions, listStrains, putBreak, saveSession } from '#lib/db.ts';
 	import { date, num, pct, t, time } from '#lib/i18n.svelte.ts';
 	import {
-		EFFECTS, METHODS, SETTINGS_PLACES, activeBreak, breakProgress, mgThc, prefill, snapshot, uid, unitFor,
+		DEFAULT_TEMP_C, EFFECTS, METHODS, SETTINGS_PLACES, activeBreak, breakProgress, mgThc, prefill, snapshot, uid, unitFor,
 		type Break, type Method, type Session, type Strain, type StrainType, type Unit
 	} from '#lib/model.ts';
-	import { amountText } from '../format.ts';
+	import { amountText, methodText } from '../format.ts';
 
 	type StepN = 1 | 2 | 3 | 4; // 4 = saved
 	const SNAP = '__snapshot'; // an edited session whose strain was deleted keeps its snapshot
@@ -50,13 +50,15 @@
 	let showAll = $state(false);
 	let method = $state<Method>('vape');
 	let amount = $state(0.15);
+	let tempC = $state(DEFAULT_TEMP_C);
+	let guessedTemp: number | undefined; // an old vape session had no temperature: don't save our guess as if entered
 	let effects = $state<string[]>([]);
 	let place = $state<string | null>(null);
 	let rating = $state(0);
 	let note = $state('');
 
 	let initial = '';
-	const snapshotState = () => JSON.stringify([at, strainKey, method, amount, effects, place, rating, note]);
+	const snapshotState = () => JSON.stringify([at, strainKey, method, amount, tempC, effects, place, rating, note]);
 	const dirty = $derived(ready && snapshotState() !== initial);
 
 	const unit = $derived(unitFor(method));
@@ -66,6 +68,7 @@
 	const info = $derived(keepSnap && editing ? { name: editing.strainName, thc: editing.thc } : strain ? { name: strain.name, thc: strain.thc } : null);
 	const pf = $derived(prefill(app.settings, strains, strainKey ?? undefined));
 	const prefilled = $derived(!editing && pf.amountIsLast && method === pf.method && amount === pf.amount);
+	const tempPrefilled = $derived(!editing && pf.tempIsLast && tempC === pf.tempC);
 
 	// StrainAvatar as an OptionGrid media snippet.
 	const avatar = (name: string, type: StrainType, src?: string) =>
@@ -112,6 +115,7 @@
 				strainKey = p.strainId ?? null;
 				method = p.method;
 				amount = p.amount;
+				tempC = p.tempC;
 				if (known(fromNew)) step = 2;
 				if (!q.has('strain')) ask = activeBreak(await listBreaks(), Date.now());
 			}
@@ -128,6 +132,8 @@
 		strainKey = s.strainId && strains.some((x) => x.id === s.strainId) ? s.strainId : SNAP;
 		method = s.method;
 		amount = s.amount;
+		tempC = s.tempC ?? prefill(app.settings, strains, s.strainId).tempC;
+		guessedTemp = s.tempC == null && s.method === 'vape' ? tempC : undefined;
 		effects = [...s.effects];
 		place = s.setting ?? null;
 		rating = s.rating ?? 0;
@@ -160,6 +166,7 @@
 				const p = prefill(app.settings, strains, v);
 				method = p.method;
 				amount = p.amount;
+				tempC = p.tempC;
 			}
 		}
 	}
@@ -210,6 +217,7 @@
 			method,
 			amount,
 			unit,
+			tempC: method === 'vape' && tempC !== guessedTemp ? tempC : undefined,
 			setting: place ?? undefined,
 			effects: [...effects],
 			rating: rating || undefined,
@@ -311,6 +319,9 @@
 								{t('thcIn', { amount: amountText(amount, unit), strain: info.name, pct: pct(info.thc) })}
 							</p>
 						{/if}
+						{#if method === 'vape'}
+							<NumberField bind:value={tempC} label={t('log.temperature')} unit="°C" step={5} min={100} max={250} prefilled={tempPrefilled} />
+						{/if}
 					{:else if step === 3}
 						<StepHeader step={3} total={3} title={t('qFeel')} subtitle={t('optionalSub')} closeLabel={t('back')} onClose={close} />
 						<section class="lh-section">
@@ -352,7 +363,7 @@
 						<div class="saved">
 							<div class="saved-mark"><Icon name="check" size={36} /></div>
 							<h1 class="lh-title">{t('sessionSaved')}</h1>
-							<p class="lh-data saved-line">{[time(saved.at), saved.strainName, amountText(saved.amount, saved.unit)].join(' · ')}</p>
+							<p class="lh-data saved-line">{[time(saved.at), saved.strainName, amountText(saved.amount, saved.unit), saved.tempC != null ? methodText(saved) : ''].filter(Boolean).join(' · ')}</p>
 							<p class="muted">
 								{[saved.unit === 'g' && saved.mgThc != null ? t('thcDerived', { mg: num(saved.mgThc) }) : '', saved.effects.map((e) => t(e)).join(', ')]
 									.filter(Boolean)

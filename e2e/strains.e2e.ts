@@ -12,6 +12,7 @@ test('create, update stash and edit a strain', async ({ page }) => {
 	await page.getByLabel('Strain name').fill('Durban Poison');
 	await page.getByRole('radio', { name: /Sativa/ }).click();
 	await page.getByLabel('Breeder (optional)').fill('Dutch Passion');
+	await page.getByLabel('Note (optional)').fill('Citrus nose.');
 	await page.getByRole('button', { name: 'Continue' }).click();
 
 	// Step 2: label facts.
@@ -24,8 +25,9 @@ test('create, update stash and edit a strain', async ({ page }) => {
 	await expect(page.getByText('Stays on this device')).toBeVisible();
 	await page.getByRole('button', { name: 'Skip' }).click();
 
-	// Detail.
+	// Detail, with the note from step 1.
 	await expect(page.getByRole('heading', { level: 1, name: 'Durban Poison' })).toBeVisible();
+	await expect(page.getByText('Citrus nose.')).toBeVisible();
 
 	// In the list.
 	await page.getByRole('button', { name: 'All strains' }).click();
@@ -41,7 +43,7 @@ test('create, update stash and edit a strain', async ({ page }) => {
 	await expect(page.getByText(/^3[.,]2\s?g$/)).toBeVisible();
 
 	// Edit THC to 22.
-	await page.getByRole('button', { name: 'Edit' }).click();
+	await page.getByRole('button', { name: 'Edit', exact: true }).click();
 	await expect(page.getByLabel('Strain name')).toHaveValue('Durban Poison');
 	await page.getByRole('button', { name: 'Continue' }).click();
 	await page.getByLabel('THC', { exact: true }).fill('22');
@@ -56,7 +58,7 @@ test('create, update stash and edit a strain', async ({ page }) => {
 
 	// Own note: add, keep across reload, edit.
 	await page.getByRole('link', { name: /Durban Poison/ }).click();
-	await page.getByRole('button', { name: 'Add a note' }).click();
+	await page.getByRole('button', { name: 'Edit note' }).click();
 	await page.getByLabel('Note').fill('Bright, peppery.\nGood for walks.');
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
 	await expect(page.getByRole('button', { name: 'Edit note' })).toBeVisible(); // saved

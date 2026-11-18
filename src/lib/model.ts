@@ -40,6 +40,7 @@ export interface Session {
 	method: Method;
 	amount: number;
 	unit: Unit;
+	tempC?: number; // vaporiser temperature, vape sessions only
 	setting?: string; // key from SETTINGS_PLACES
 	effects: string[]; // keys from EFFECTS
 	rating?: number;
@@ -59,12 +60,15 @@ export interface Settings {
 	theme: 'system' | 'light' | 'dark';
 	lastStrainId?: string;
 	lastMethod?: Method;
-	amountByStrain: Record<string, { amount: number; unit: Unit }>;
+	lastTempC?: number;
+	amountByStrain: Record<string, { amount: number; unit: Unit; tempC?: number }>;
 	/** First-run onboarding was finished or skipped. */
 	onboarded?: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = { theme: 'system', amountByStrain: {} };
+
+export const DEFAULT_TEMP_C = 190;
 
 export const unitFor = (m: Method): Unit => (m === 'edible' ? 'mg' : 'g');
 
@@ -84,14 +88,18 @@ export function snapshot(strain: Strain, s: Pick<Session, 'method' | 'amount' | 
 	};
 }
 
-/** Defaults for the quick log: last strain, last method, last amount for that strain, now. */
+/** Defaults for the quick log: last strain, last method, last amount (and vape temperature) for that strain, now. */
 export function prefill(settings: Settings, strains: Strain[], strainId?: string) {
 	const id = strainId ?? (strains.some((s) => s.id === settings.lastStrainId) ? settings.lastStrainId : strains[0]?.id);
 	const method = settings.lastMethod ?? 'vape';
 	const unit = unitFor(method);
 	const last = id ? settings.amountByStrain[id] : undefined;
 	const amount = last && last.unit === unit ? last.amount : unit === 'mg' ? 5 : 0.15;
-	return { strainId: id, method, unit, amount, amountIsLast: !!last && last.unit === unit, at: Date.now() };
+	const lastTemp = last?.tempC ?? settings.lastTempC;
+	return {
+		strainId: id, method, unit, amount, amountIsLast: !!last && last.unit === unit,
+		tempC: lastTemp ?? DEFAULT_TEMP_C, tempIsLast: lastTemp != null, at: Date.now()
+	};
 }
 
 /** Stash change caused by a session: flower grams leave the stash. Never below 0. */

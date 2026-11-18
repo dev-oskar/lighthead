@@ -24,7 +24,12 @@ describe('prefill', () => {
 		const p = prefill({ ...DEFAULT_SETTINGS, lastStrainId: 'nl', lastMethod: 'joint', amountByStrain: { nl: { amount: 0.3, unit: 'g' } } }, [nl]);
 		expect(p).toMatchObject({ strainId: 'nl', method: 'joint', amount: 0.3, amountIsLast: true });
 	});
-	it('falls back to sensible defaults', () => expect(prefill(DEFAULT_SETTINGS, [])).toMatchObject({ strainId: undefined, method: 'vape', amount: 0.15 }));
+	it('falls back to sensible defaults', () => expect(prefill(DEFAULT_SETTINGS, [])).toMatchObject({ strainId: undefined, method: 'vape', amount: 0.15, tempC: 190, tempIsLast: false }));
+	it('vape temperature: this strain, else the last one used, else 190', () => {
+		const set = { ...DEFAULT_SETTINGS, lastTempC: 185, amountByStrain: { nl: { amount: 0.1, unit: 'g' as const, tempC: 200 } } };
+		expect(prefill(set, [nl], 'nl')).toMatchObject({ tempC: 200, tempIsLast: true });
+		expect(prefill({ ...set, amountByStrain: {} }, [nl], 'nl')).toMatchObject({ tempC: 185, tempIsLast: true });
+	});
 });
 
 describe('stash', () => {
