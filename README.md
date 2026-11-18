@@ -2,6 +2,19 @@
 
 A private journal for cannabis use: log sessions, keep a strain library, plan tolerance breaks and see simple statistics. It is an offline-first PWA and everything stays on the device — no accounts, no analytics, no requests to other sites.
 
+## Privacy
+
+- Your journal lives in your browser's storage on this device. There are no accounts and no database on a server.
+- LightHead sends nothing anywhere: no analytics, no ads, no crash reports, no fonts or scripts from other sites. The browser enforces this through the app's Content-Security-Policy (`static/_headers`), and an automated test (`e2e/offline.e2e.ts`) checks that the app makes no requests to other sites.
+- Cloudflare serves the app's files. Like any web host it can see that someone downloaded them (IP address and time), but never what you log.
+- After the first visit the whole app is stored on the device and works offline.
+- Each browser keeps its own separate journal, and clearing the browser's data for this site deletes it. Save a backup file in Settings now and then.
+- A backup file is plain, unencrypted JSON with your whole journal, photos included: keep it somewhere private.
+- The app has no lock of its own: anyone who can use your unlocked device can open it.
+- Strain photos are cropped and redrawn before saving, which removes hidden metadata such as GPS location.
+
+The app explains the same in Settings → How your data is kept. To report a security problem, see [SECURITY.md](SECURITY.md).
+
 ## Run it
 
 Needs Node 22+.

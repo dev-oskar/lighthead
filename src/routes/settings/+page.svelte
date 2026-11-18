@@ -157,6 +157,11 @@
 		{/if}
 	</section>
 
+	<div class="links">
+		<a href={resolve('/privacy')}>{t('privacy.title')}<Icon name="chevron" size={20} /></a>
+		<a href={resolve('/help')}>{t('help.title')}<Icon name="chevron" size={20} /></a>
+	</div>
+
 	<footer class="lh-meta">{versionLine} · <a href={asset('licenses/fonts-OFL.txt')}>{t('fontLicences')}</a></footer>
 </main>
 
@@ -170,4 +175,13 @@
 	.storage { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
 	.storage .lh-data { font-size: 14px; }
 	footer a { color: var(--moss); }
+	.links { display: flex; flex-direction: column; background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-md); }
+	.links a {
+		display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 48px;
+		padding: var(--space-3) var(--space-4); box-sizing: border-box; border-radius: var(--radius-md);
+		color: var(--ink); font-weight: 600; text-decoration: none;
+	}
+	.links a + a { border-top: 1px solid var(--line); border-radius: 0 0 var(--radius-md) var(--radius-md); }
+	.links a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+	.links :global(.lh-icon) { flex: none; color: var(--ink-muted); }
 </style>

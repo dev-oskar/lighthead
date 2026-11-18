@@ -10,7 +10,8 @@
 	// Desktop navigation (>= 960px); the TabBar does the same job on phones. app.css switches between them.
 	let { tabs, current }: { tabs: readonly { value: string; path: '/' | '/log' | '/strains' | '/stats' | '/break'; icon: IconName }[]; current: string } = $props();
 
-	const onSettings = $derived(page.url.pathname.startsWith(resolve('/settings')));
+	// Privacy and help are Settings' sub-pages.
+	const onSettings = $derived([resolve('/settings'), resolve('/privacy'), resolve('/help')].some((p) => page.url.pathname.startsWith(p)));
 </script>
 
 <nav class="lh-rail" aria-label={t('mainNav')}>

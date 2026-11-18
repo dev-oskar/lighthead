@@ -20,6 +20,7 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 
 ## Product rules (from the design system brand book, `design/ds/README.md`)
 - Data never leaves the device. No third-party requests of any kind (fonts, CDNs, analytics). `e2e/offline.e2e.ts` enforces it.
+- Privacy and safety claims in docs (README, SECURITY.md) and in the app (`/privacy`, `/help`, `src/lib/messages/help.ts`) must match what the code enforces; update them when behaviour changes.
 - Never judge usage: no warnings, no red for amounts, no streaks or praise. Red (`clay`) only for deleting and real errors.
 - Sessions store a snapshot of the strain (name, type, THC/CBD, derived mg). Editing/deleting a strain never changes past sessions or stats.
 - Derived THC = grams × THC % × 10, shown as "≈ 27 mg THC"; never called a dose. Edibles: the mg is already THC.

@@ -11,7 +11,7 @@ test('makes no third-party requests and works offline after first load', async (
 	await page.evaluate(() => navigator.serviceWorker.ready);
 	await page.reload(); // now controlled by the service worker
 
-	for (const path of ['/log', '/strains', '/stats', '/break', '/settings']) await page.goto(path);
+	for (const path of ['/log', '/strains', '/stats', '/break', '/settings', '/privacy', '/help']) await page.goto(path);
 	expect(foreign).toEqual([]);
 
 	// Server unreachable: abort everything that reaches the network (service-worker cache hits are untouched).
