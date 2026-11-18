@@ -1,0 +1,69 @@
+import type { Messages } from '../i18n.svelte.ts';
+
+// First-run onboarding (/welcome): welcome + language, home-screen install, first strain.
+// install1/install2 wrap a bold UI label ({b}), which is the browser's own wording in that language.
+export const messages: Record<string, Messages> = {
+	en: {
+		'onboarding.tagline': 'A quiet journal for your sessions, strains and breaks.',
+		'onboarding.privateBody': 'No account, no tracking. Nothing you log is sent anywhere.',
+		'onboarding.installTitle': 'Keep it on your home screen',
+		'onboarding.installSub': 'Your journal lives in this browser. On the home screen it opens like an app and the browser keeps your data.',
+		'onboarding.install1': 'Tap {b} in Safari’s toolbar',
+		'onboarding.install1b': 'Share',
+		'onboarding.install2': 'Choose {b}',
+		'onboarding.install2b': 'Add to Home Screen',
+		'onboarding.install3': 'Open LightHead from the new icon',
+		'onboarding.offline': 'Works without internet once it is installed.',
+		'onboarding.install': 'Install',
+		'onboarding.strainTitle': 'What do you have at home?',
+		'onboarding.strainSub': 'Add a strain once with its THC and CBD. Logging then takes three taps.',
+		'onboarding.yourStrain': 'Your strain',
+		'onboarding.cardTitle': 'Name, type and label',
+		'onboarding.cardBody': 'THC and CBD from the package. A photo is optional.',
+		'onboarding.laterHint': 'You can also do this later from Strains.',
+		'onboarding.addStrain': 'Add a strain',
+		'onboarding.later': 'Later'
+	},
+	de: {
+		'onboarding.tagline': 'Ein ruhiges Tagebuch für deine Sitzungen, Sorten und Pausen.',
+		'onboarding.privateBody': 'Kein Konto, kein Tracking. Nichts, was du einträgst, wird irgendwohin gesendet.',
+		'onboarding.installTitle': 'Leg es auf deinen Home-Bildschirm',
+		'onboarding.installSub': 'Dein Tagebuch lebt in diesem Browser. Vom Home-Bildschirm öffnet es sich wie eine App, und der Browser behält deine Daten.',
+		'onboarding.install1': 'Tippe in der Safari-Leiste auf {b}',
+		'onboarding.install1b': 'Teilen',
+		'onboarding.install2': 'Wähle {b}',
+		'onboarding.install2b': 'Zum Home-Bildschirm',
+		'onboarding.install3': 'Öffne LightHead über das neue Symbol',
+		'onboarding.offline': 'Funktioniert ohne Internet, sobald es installiert ist.',
+		'onboarding.install': 'Installieren',
+		'onboarding.strainTitle': 'Was hast du zu Hause?',
+		'onboarding.strainSub': 'Leg eine Sorte einmal mit THC und CBD an. Danach brauchst du zum Eintragen nur drei Tipps.',
+		'onboarding.yourStrain': 'Deine Sorte',
+		'onboarding.cardTitle': 'Name, Art und Etikett',
+		'onboarding.cardBody': 'THC und CBD von der Packung. Ein Foto ist optional.',
+		'onboarding.laterHint': 'Das geht auch später unter Sorten.',
+		'onboarding.addStrain': 'Sorte hinzufügen',
+		'onboarding.later': 'Später'
+	},
+	pl: {
+		'onboarding.tagline': 'Spokojny dziennik twoich sesji, odmian i przerw.',
+		'onboarding.privateBody': 'Bez konta, bez śledzenia. Nic, co zapisujesz, nie jest nigdzie wysyłane.',
+		'onboarding.installTitle': 'Dodaj go do ekranu początkowego',
+		'onboarding.installSub': 'Twój dziennik mieszka w tej przeglądarce. Z ekranu początkowego otwiera się jak aplikacja, a przeglądarka zachowuje twoje dane.',
+		'onboarding.install1': 'Stuknij {b} na pasku Safari',
+		'onboarding.install1b': 'Udostępnij',
+		'onboarding.install2': 'Wybierz {b}',
+		'onboarding.install2b': 'Do ekranu początkowego',
+		'onboarding.install3': 'Otwórz LightHead z nowej ikony',
+		'onboarding.offline': 'Po instalacji działa bez internetu.',
+		'onboarding.install': 'Zainstaluj',
+		'onboarding.strainTitle': 'Co masz w domu?',
+		'onboarding.strainSub': 'Dodaj odmianę raz, razem z THC i CBD. Potem zapis sesji to trzy stuknięcia.',
+		'onboarding.yourStrain': 'Twoja odmiana',
+		'onboarding.cardTitle': 'Nazwa, typ i etykieta',
+		'onboarding.cardBody': 'THC i CBD z opakowania. Zdjęcie jest opcjonalne.',
+		'onboarding.laterHint': 'Możesz to zrobić też później w zakładce Odmiany.',
+		'onboarding.addStrain': 'Dodaj odmianę',
+		'onboarding.later': 'Później'
+	}
+};

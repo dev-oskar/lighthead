@@ -20,6 +20,7 @@
 
 	const editId = page.url.searchParams.get('edit');
 	const fromLog = page.url.searchParams.get('from') === 'log';
+	const fromOnboarding = page.url.searchParams.get('from') === 'onboarding'; // first run: back to Today, not the strain
 
 	let original = $state.raw<Strain | undefined>();
 	let step = $state(1);
@@ -64,6 +65,7 @@
 
 	function leave() {
 		if (fromLog) history.back();
+		else if (fromOnboarding) goto(resolve('/'), { replaceState: true });
 		else if (editId) goto(resolve('/strains/[id]', { id: editId }));
 		else goto(resolve('/strains'));
 	}
@@ -111,6 +113,7 @@
 			saving = false;
 		}
 		if (fromLog) goto(resolve('/log/new') + '?strain=' + encodeURIComponent(strain.id));
+		else if (fromOnboarding) goto(resolve('/'), { replaceState: true });
 		else goto(resolve('/strains/[id]', { id: strain.id }));
 	}
 

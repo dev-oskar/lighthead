@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.ts';
 
 // Desktop (>= 960px) swaps the bottom TabBar for a left rail; phones keep the TabBar.
 test('desktop shows the rail, phone shows the tab bar', async ({ page }) => {

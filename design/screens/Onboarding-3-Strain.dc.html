@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Your first strain</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="ds/lighthead/components/bundle.css">
+<script src="ds/lighthead/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:var(--moss)}a:hover{color:var(--moss-strong)}
+</style>
+</helmet>
+<div class="lh-screen" data-theme="{{theme}}">
+  <main style="flex: 1; min-height: 0; overflow: hidden; padding: 16px 16px 24px; display: flex; flex-direction: column; gap: 20px">
+    <x-import component-from-global-scope="LightHead.StepHeader" step="{{three}}" total="{{three}}" title="What do you have at home?" subtitle="Add a strain once with its THC and CBD. Logging then takes three taps." close-label="Back"></x-import>
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 20px; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 22px 4px 22px 4px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <x-import component-from-global-scope="LightHead.StrainAvatar" name="Your strain" type="hybrid" size="lg"></x-import>
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span class="lh-heading">Name, type and label</span>
+          <span class="lh-meta">THC and CBD from the package. A photo is optional.</span>
+        </div>
+      </div>
+    </div>
+    <p class="lh-meta">You can also do this later from Strains.</p>
+  </main>
+  <div style="padding: 0 16px">
+    <x-import component-from-global-scope="LightHead.ActionBar" primary="Add a strain" secondary="Later"></x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dark":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+theme: this.props.dark ? 'dark' : 'light',
+three: 3
+};
+}
+}
+</script>
+</body>
+</html>

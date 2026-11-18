@@ -23,6 +23,13 @@ export function db() {
 	}));
 }
 
+/** Anything logged yet (an existing user): first-run onboarding is skipped. */
+export async function hasData() {
+	const d = await db();
+	const counts = await Promise.all([d.count('strains'), d.count('sessions'), d.count('breaks')]);
+	return counts.some(Boolean);
+}
+
 // Strains
 export const listStrains = async () => (await (await db()).getAll('strains')).sort((a, b) => a.name.localeCompare(b.name));
 export const getStrain = async (id: string) => (await db()).get('strains', id);

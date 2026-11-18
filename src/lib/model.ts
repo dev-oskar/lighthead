@@ -59,6 +59,8 @@ export interface Settings {
 	lastStrainId?: string;
 	lastMethod?: Method;
 	amountByStrain: Record<string, { amount: number; unit: Unit }>;
+	/** First-run onboarding was finished or skipped. */
+	onboarded?: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = { theme: 'system', amountByStrain: {} };

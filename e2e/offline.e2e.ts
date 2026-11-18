@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.ts';
 
 // Privacy + offline: the app never contacts another origin, and works with no network once installed.
 test('makes no third-party requests and works offline after first load', async ({ page, context, baseURL }) => {

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from './fixtures.ts';
 
 // The fastest log: three taps in the same spot (Continue, Continue, Skip), then the session shows on Today and in the Journal.
 test('quick log with prefilled defaults', async ({ page }) => {
