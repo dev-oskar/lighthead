@@ -7,11 +7,14 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import TabBar from '#lib/ds/TabBar.svelte';
+	import Notice from '#lib/ds/Notice.svelte';
+	import Button from '#lib/ds/Button.svelte';
 	import NavRail from './NavRail.svelte';
 	import { app, applyTheme, loadSettings, updateSettings } from '#lib/app-state.svelte.ts';
 	import { hasData } from '#lib/db.ts';
 	import '#lib/install.svelte.ts'; // catches beforeinstallprompt early, for onboarding
 	import { i18n, t } from '#lib/i18n.svelte.ts';
+	import { update, applyUpdate } from '#lib/update.svelte.ts';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
@@ -60,6 +63,14 @@
 		<!-- Rail first so keyboard and screen-reader order matches what desktop shows (hidden on phones). -->
 		{#if !inFlow}<NavRail tabs={TABS} {current} />{/if}
 		{@render children()}
+		{#if update.ready && !inFlow}
+			<!-- Not inside flows: the person is mid-input there. Also applies by itself on next launch. -->
+			<div class="update">
+				<Notice tone="info" title={t('update.ready')}>
+					{#snippet action()}<Button variant="quiet" onclick={applyUpdate}>{t('update.reload')}</Button>{/snippet}
+				</Notice>
+			</div>
+		{/if}
 		{#if !inFlow}
 			<TabBar
 				items={TABS.map((tab) => ({ value: tab.value, label: t(tab.value), icon: tab.icon }))}
@@ -69,3 +80,16 @@
 		{/if}
 	{/if}
 </div>
+
+<style>
+	/* Floats at the top on phones: the bottom has the TabBar and the FAB. */
+	.update {
+		position: fixed; z-index: 20; left: 0; right: 0; max-width: 520px; margin: 0 auto; box-sizing: border-box;
+		top: calc(env(safe-area-inset-top) + var(--space-3)); padding: 0 var(--space-3);
+	}
+	.update :global(.lh-notice) { align-items: center; box-shadow: var(--shadow-lg); }
+	/* Desktop: top-right of the content area, beside the rail. */
+	@media (min-width: 960px) {
+		.update { left: auto; right: 40px; top: var(--space-6); width: 400px; padding: 0; }
+	}
+</style>

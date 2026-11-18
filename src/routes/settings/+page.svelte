@@ -8,9 +8,9 @@
 	import SegmentedControl from '#lib/ds/SegmentedControl.svelte';
 	import { exportAll, importAll, type ExportFile } from '#lib/db.ts';
 	import { app, loadSettings, updateSettings } from '#lib/app-state.svelte.ts';
-	import { i18n, t, num, type Locale } from '#lib/i18n.svelte.ts';
+	import { version } from '$app/env';
+	import { i18n, t, num, date, time, type Locale } from '#lib/i18n.svelte.ts';
 	import type { Settings } from '#lib/model.ts';
-	import pkg from '../../../package.json';
 
 	// Language names are endonyms: never translated.
 	const LANGS = [{ value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'pl', label: 'Polski' }];
@@ -38,6 +38,14 @@
 			if (est?.usage != null) usedMb = est.usage / 1e6;
 		} catch { /* storage API missing: show the hint */ }
 	});
+
+	// Kit's build version is the build time in ms; anything else (a custom name) is shown as is.
+	const built = Number(version);
+	const versionLine = $derived(
+		Number.isFinite(built) && built > 0
+			? t('update.version', { date: date(built, { day: 'numeric', month: 'short', year: 'numeric' }), time: time(built) })
+			: t('version', { v: version })
+	);
 
 	const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 
@@ -138,7 +146,7 @@
 		{/if}
 	</section>
 
-	<footer class="lh-meta">{t('version', { v: pkg.version })} · <a href={asset('licenses/fonts-OFL.txt')}>{t('fontLicences')}</a></footer>
+	<footer class="lh-meta">{versionLine} · <a href={asset('licenses/fonts-OFL.txt')}>{t('fontLicences')}</a></footer>
 </main>
 
 <style>

@@ -13,8 +13,14 @@ const url = (p: string) => new URL(p, self.registration.scope).href;
 // _headers is host config, never served
 const FILES = [...immutable, ...assets.filter((f) => f.path !== '_headers')].map((f) => url(f.path)).concat(url(SHELL));
 
+// No skipWaiting here: an update waits until the page asks (src/lib/update.svelte.ts), so an open page never
+// loses the old build's chunks. A first install has no previous worker and activates right away.
 self.addEventListener('install', (e) => {
-	e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
+	e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)));
+});
+
+self.addEventListener('message', (e) => {
+	if (e.data?.type === 'skip-waiting') self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
