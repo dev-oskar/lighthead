@@ -20,6 +20,16 @@
 	let pending = $state<{ name: string; data: ExportFile }>();
 	let result = $state<{ ok: boolean; count?: number }>();
 	let fileInput = $state<HTMLInputElement>();
+	let failed = $state(false); // a write threw: say so
+
+	async function set(patch: Partial<Settings>) {
+		try {
+			await updateSettings(patch);
+			failed = false;
+		} catch {
+			failed = true;
+		}
+	}
 
 	onMount(async () => {
 		try {
@@ -55,24 +65,27 @@
 
 	async function replace() {
 		const { data } = pending!;
-		pending = undefined;
 		try {
 			await importAll($state.snapshot(data) as ExportFile);
-			await loadSettings();
-			result = { ok: true, count: data.sessions.length };
 		} catch {
-			result = { ok: false };
+			failed = true; // keep the question open so it can be tried again
+			return;
 		}
+		failed = false;
+		pending = undefined;
+		await loadSettings();
+		result = { ok: true, count: data.sessions.length };
 	}
 </script>
 
 <main class="lh-page settings">
 	<div class="back"><Button variant="quiet" onclick={() => goto(resolve('/'))}>{t('today')}</Button></div>
 	<h1 class="lh-title">{t('settings')}</h1>
+	{#if failed}<Notice tone="danger">{t('errors.saveFailed')}</Notice>{/if}
 
 	<section class="lh-section tight">
 		<h2 class="lh-overline">{t('language')}</h2>
-		<SegmentedControl label={t('language')} value={app.settings.locale ?? i18n.locale} options={LANGS} onChange={(v) => updateSettings({ locale: v as Locale })} />
+		<SegmentedControl label={t('language')} value={app.settings.locale ?? i18n.locale} options={LANGS} onChange={(v) => set({ locale: v as Locale })} />
 	</section>
 
 	<section class="lh-section tight">
@@ -81,7 +94,7 @@
 			label={t('theme')}
 			value={app.settings.theme}
 			options={[{ value: 'system', label: t('themeSystem') }, { value: 'light', label: t('themeLight') }, { value: 'dark', label: t('themeDark') }]}
-			onChange={(v) => updateSettings({ theme: v as Settings['theme'] })}
+			onChange={(v) => set({ theme: v as Settings['theme'] })}
 		/>
 	</section>
 

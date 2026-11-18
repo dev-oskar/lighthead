@@ -3,24 +3,28 @@
 	import BreakProgress from '#lib/ds/BreakProgress.svelte';
 	import Button from '#lib/ds/Button.svelte';
 	import Icon from '#lib/ds/Icon.svelte';
+	import Notice from '#lib/ds/Notice.svelte';
 	import OptionGrid from '#lib/ds/OptionGrid.svelte';
 	import TextField from '#lib/ds/TextField.svelte';
 	import { listBreaks, listSessions, putBreak } from '#lib/db.ts';
 	import { t, date } from '#lib/i18n.svelte.ts';
 	import { BREAK_LENGTHS, breakEnd, breakProgress, uid, type Break, type Session } from '#lib/model.ts';
+	import { useNow } from '#lib/now.svelte.ts';
 
 	const short = { weekday: 'short', day: 'numeric', month: 'short' } as const;
 
 	let breaks = $state<Break[]>([]);
 	let sessions = $state<Session[]>([]);
-	let now = $state(Date.now());
+	const clock = useNow();
+	const now = $derived(clock.now);
 	let lengthStr = $state('21');
 	let starting = $state(false); // "Start another break" after a complete one
 	let confirmEnd = $state(false);
 	let noteOpen = $state(false);
 	let noteText = $state('');
+	let failed = $state(false); // a write threw: say so, keep what was typed
 
-	async function load() { [breaks, sessions] = await Promise.all([listBreaks(), listSessions()]); now = Date.now(); }
+	async function load() { [breaks, sessions] = await Promise.all([listBreaks(), listSessions()]); clock.now = Date.now(); }
 	onMount(load);
 
 	// Newest break not ended by hand: running, or complete and still shown until another starts.
@@ -29,19 +33,28 @@
 	const during = $derived(current && prog ? sessions.filter((s) => s.at >= current.start && s.at < prog.end).length : 0);
 	const past = $derived(breaks.filter((b) => b !== current && (b.endedAt || breakProgress(b, now).complete)));
 
-	async function save(b: Break) { await putBreak($state.snapshot(b)); await load(); }
+	/** false when the write failed; the page stays as it was. */
+	async function save(b: Break) {
+		try {
+			await putBreak($state.snapshot(b));
+		} catch {
+			failed = true;
+			return false;
+		}
+		failed = false;
+		await load();
+		return true;
+	}
 
 	async function start() {
-		starting = false;
-		await save({ id: uid(), start: Date.now(), lengthDays: +lengthStr, notes: [] });
+		if (await save({ id: uid(), start: Date.now(), lengthDays: +lengthStr, notes: [] })) starting = false;
 	}
 	async function end() {
-		confirmEnd = false;
-		await save({ ...current!, endedAt: Date.now() });
+		if (await save({ ...current!, endedAt: Date.now() })) confirmEnd = false;
 	}
 	async function addNote() {
 		const text = noteText.trim();
-		if (text) await save({ ...current!, notes: [...current!.notes, { at: Date.now(), text }] });
+		if (text && !(await save({ ...current!, notes: [...current!.notes, { at: Date.now(), text }] }))) return;
 		noteText = '';
 		noteOpen = false;
 	}
@@ -57,6 +70,7 @@
 		<span class="lh-overline">{t('breakLabel')}</span>
 		<h1 class="lh-title">{current && prog ? t('dayOf', { day: prog.day, total: current.lengthDays }) : t('takeBreak')}</h1>
 	</header>
+	{#if failed}<Notice tone="danger">{t('errors.saveFailed')}</Notice>{/if}
 
 	{#if current && prog}
 		<BreakProgress

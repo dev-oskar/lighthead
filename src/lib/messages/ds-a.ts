@@ -1,6 +1,6 @@
 import type { Messages } from '../i18n.svelte.ts';
 
-// Messages for the form/feedback design-system components and their dev gallery (/dev/ds-a).
+// Messages for the form/feedback design-system components.
 export const messages: Record<string, Messages> = {
 	en: {
 		language: 'Language', week: 'Week', month: 'Month', year: 'Year', period: 'Period',

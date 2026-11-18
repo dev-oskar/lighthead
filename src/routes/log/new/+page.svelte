@@ -7,6 +7,7 @@
 	import Button from '#lib/ds/Button.svelte';
 	import Chip from '#lib/ds/Chip.svelte';
 	import Icon from '#lib/ds/Icon.svelte';
+	import Notice from '#lib/ds/Notice.svelte';
 	import NumberField from '#lib/ds/NumberField.svelte';
 	import OptionGrid from '#lib/ds/OptionGrid.svelte';
 	import Rating from '#lib/ds/Rating.svelte';
@@ -40,6 +41,7 @@
 	let step = $state<StepN>(1);
 	let dir = $state<'fwd' | 'back'>('fwd');
 	let confirm = $state<'discard' | 'delete' | null>(null);
+	let failed = $state(false); // a write threw: say so, keep everything on screen
 
 	let at = $state(Date.now());
 	let timeSet = $state(false);
@@ -163,7 +165,13 @@
 	}
 
 	async function endBreak() {
-		await putBreak({ ...$state.snapshot(ask!), endedAt: Date.now() });
+		try {
+			await putBreak({ ...$state.snapshot(ask!), endedAt: Date.now() });
+		} catch {
+			failed = true;
+			return;
+		}
+		failed = false;
 		ask = undefined;
 	}
 
@@ -209,10 +217,14 @@
 		};
 		try {
 			await saveSession(session);
-			await loadSettings();
+		} catch {
+			failed = true;
+			return;
 		} finally {
 			busy = false;
 		}
+		failed = false;
+		await loadSettings();
 		saved = session;
 		go(4);
 	}
@@ -224,7 +236,12 @@
 	}
 
 	async function del() {
-		await deleteSession(editing!.id);
+		try {
+			await deleteSession(editing!.id);
+		} catch {
+			failed = true;
+			return;
+		}
 		goto(resolve('/log'));
 	}
 </script>
@@ -232,6 +249,7 @@
 <div class="lh-flow">
 	{#if ready && ask}
 		<main>
+			{#if failed}<Notice tone="danger">{t('errors.saveFailed')}</Notice>{/if}
 			<div class="ask-close"><Button variant="quiet" icon="close" aria-label={t('cancel')} onclick={leave} /></div>
 			<div class="ask">
 				<div class="mark"><Icon name="break" size={36} /></div>
@@ -316,6 +334,7 @@
 							<Rating bind:value={rating} size={36} label={t('rating')} />
 						</section>
 						<TextField label={t('note')} multiline placeholder={t('log.notePh')} bind:value={note} />
+						{#if failed}<Notice tone="danger">{t('errors.saveFailed')}</Notice>{/if}
 						{#if editing}
 							{#if confirm === 'delete'}
 								<div class="lh-confirm" role="alert">

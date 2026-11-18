@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
-	applyStash, breakEnd, breakProgress, clamp, dailyGrams, DEFAULT_SETTINGS, groupByDay, mgThc, nudge, periodRange, prefill, snapshot, totals,
+	applyStash, breakEnd, breakProgress, clamp, dailyGrams, DEFAULT_SETTINGS, groupByDay, mgThc, nudge, periodRange, prefill, previousSpan, snapshot, totals,
 	type Session, type Strain
 } from './model.ts';
 import { initials } from './photo.ts';
@@ -60,6 +60,26 @@ describe('periods and totals', () => {
 	it('groups by day, newest first', () => {
 		const g = groupByDay([sess({ at: at(2026, 10, 19) }), sess({ at: at(2026, 10, 21) }), sess({ at: at(2026, 10, 21, 20) })]);
 		expect(g.map((x) => x.sessions.length)).toEqual([2, 1]);
+	});
+});
+
+describe('previousSpan: same elapsed span of the previous period', () => {
+	const span = (p: 'week' | 'month' | 'year', now: number) => previousSpan(p, now, 'de');
+	it('week: Mon–Wed vs Mon–Wed', () => expect(span('week', at(2026, 11, 18, 9))).toEqual({ start: at(2026, 11, 9, 0), end: at(2026, 11, 12, 0) }));
+	it('week: Monday morning vs last Monday', () => expect(span('week', at(2026, 11, 16, 1))).toEqual({ start: at(2026, 11, 9, 0), end: at(2026, 11, 10, 0) }));
+	it('month: days 1–17 vs days 1–17', () => expect(span('month', at(2026, 11, 17))).toEqual({ start: at(2026, 10, 1, 0), end: at(2026, 10, 18, 0) }));
+	it('month: clamps to a shorter previous month', () => expect(span('month', at(2026, 3, 31))).toEqual({ start: at(2026, 2, 1, 0), end: at(2026, 3, 1, 0) }));
+	it('year: same day count', () => expect(span('year', at(2026, 3, 1))).toEqual({ start: at(2025, 1, 1, 0), end: at(2025, 3, 2, 0) }));
+	it('year: clamps after a leap year', () => expect(span('year', at(2024, 12, 31))).toEqual({ start: at(2023, 1, 1, 0), end: at(2024, 1, 1, 0) }));
+	it('ends at local midnight across a DST change', () => {
+		vi.stubEnv('TZ', 'Europe/Berlin'); // clocks go back on 25 Oct 2026
+		try {
+			expect(span('month', at(2026, 11, 30))).toEqual({ start: at(2026, 10, 1, 0), end: at(2026, 10, 31, 0) });
+			expect(span('week', at(2026, 10, 28))).toEqual({ start: at(2026, 10, 19, 0), end: at(2026, 10, 22, 0) });
+			expect(new Date(span('month', at(2026, 11, 30)).end).getHours()).toBe(0);
+		} finally {
+			vi.unstubAllEnvs();
+		}
 	});
 });
 

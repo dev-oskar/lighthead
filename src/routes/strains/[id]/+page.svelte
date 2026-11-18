@@ -4,6 +4,7 @@
 	import { resolve } from '$app/paths';
 	import Button from '#lib/ds/Button.svelte';
 	import Icon from '#lib/ds/Icon.svelte';
+	import Notice from '#lib/ds/Notice.svelte';
 	import NumberField from '#lib/ds/NumberField.svelte';
 	import Rating from '#lib/ds/Rating.svelte';
 	import SessionCard from '#lib/ds/SessionCard.svelte';
@@ -21,6 +22,7 @@
 	let loaded = $state(false);
 	let stashDraft = $state<number | null>(null); // non-null while editing the stash
 	let confirmDelete = $state(false);
+	let failed = $state(false); // a write threw: say so, keep what was typed
 
 	async function load(sid: string) {
 		[strain, sessions] = await Promise.all([getStrain(sid), sessionsForStrain(sid)]);
@@ -28,9 +30,17 @@
 	}
 	$effect(() => { load(id); });
 
+	/** false when the write failed; the page keeps showing what was there. */
 	async function save(next: Strain) {
-		await putStrain(next);
+		try {
+			await putStrain(next);
+		} catch {
+			failed = true;
+			return false;
+		}
+		failed = false;
 		await load(next.id);
+		return true;
 	}
 
 	const photo = $derived(strain?.photo ? URL.createObjectURL(strain.photo) : undefined);
@@ -45,12 +55,16 @@
 
 	async function saveStash() {
 		if (!strain || stashDraft == null) return;
-		await save({ ...strain, stashG: stashDraft });
-		stashDraft = null;
+		if (await save({ ...strain, stashG: stashDraft })) stashDraft = null;
 	}
 
 	async function remove() {
-		await deleteStrain(id);
+		try {
+			await deleteStrain(id);
+		} catch {
+			failed = true;
+			return;
+		}
 		goto(resolve('/strains'));
 	}
 
@@ -65,6 +79,7 @@
 		{/if}
 	</div>
 
+	{#if failed}<Notice tone="danger">{t('errors.saveFailed')}</Notice>{/if}
 	{#if strain}
 		<div class="split">
 			<div class="col">

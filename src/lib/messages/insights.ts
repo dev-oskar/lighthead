@@ -5,7 +5,7 @@ export const messages: Record<string, Messages> = {
 	en: {
 		thcInMaterial: 'THC in material', thcNote: "From each strain's THC %", daysClear: 'Days clear', byStrain: 'By strain', edibles: 'Edibles',
 		statsEmpty: 'Nothing logged in this period.',
-		prev_week: 'last week', prev_month: 'last month', prev_year: 'last year',
+		prev_week: 'this point last week', prev_month: 'this point last month', prev_year: 'this point last year',
 		cmpLess: '{amount} less than {prev}', cmpMore: '{amount} more than {prev}', cmpSame: 'Same as {prev}',
 		mostlyMorning: 'Mostly mornings', mostlyAfternoon: 'Mostly afternoons', mostlyEvening: 'Mostly evenings', mostlyNight: 'Mostly nights',
 		takeBreak: 'Take a break', breakLead: 'Pick a length. You can end it early at any time, and you can still log sessions while it runs.',
@@ -28,7 +28,7 @@ export const messages: Record<string, Messages> = {
 	de: {
 		thcInMaterial: 'THC im Material', thcNote: 'Aus dem THC-Gehalt jeder Sorte', daysClear: 'Tage ohne Sitzung', byStrain: 'Nach Sorte', edibles: 'Edibles',
 		statsEmpty: 'In diesem Zeitraum ist nichts eingetragen.',
-		prev_week: 'letzte Woche', prev_month: 'letzten Monat', prev_year: 'letztes Jahr',
+		prev_week: 'zur gleichen Zeit letzte Woche', prev_month: 'zur gleichen Zeit letzten Monat', prev_year: 'zur gleichen Zeit letztes Jahr',
 		cmpLess: '{amount} weniger als {prev}', cmpMore: '{amount} mehr als {prev}', cmpSame: 'Gleich viel wie {prev}',
 		mostlyMorning: 'Meist morgens', mostlyAfternoon: 'Meist nachmittags', mostlyEvening: 'Meist abends', mostlyNight: 'Meist nachts',
 		takeBreak: 'Mach eine Pause', breakLead: 'Wähl eine Dauer. Du kannst jederzeit früher aufhören und währenddessen weiter Sitzungen eintragen.',
@@ -51,7 +51,7 @@ export const messages: Record<string, Messages> = {
 	pl: {
 		thcInMaterial: 'THC w materiale', thcNote: 'Z zawartości THC każdej odmiany', daysClear: 'Dni bez sesji', byStrain: 'Według odmiany', edibles: 'Jadalne',
 		statsEmpty: 'W tym okresie nic nie zapisano.',
-		prev_week: 'w zeszłym tygodniu', prev_month: 'w zeszłym miesiącu', prev_year: 'w zeszłym roku',
+		prev_week: 'do tego dnia w zeszłym tygodniu', prev_month: 'do tego dnia w zeszłym miesiącu', prev_year: 'do tego dnia w zeszłym roku',
 		cmpLess: 'O {amount} mniej niż {prev}', cmpMore: 'O {amount} więcej niż {prev}', cmpSame: 'Tyle samo co {prev}',
 		mostlyMorning: 'Głównie rano', mostlyAfternoon: 'Głównie po południu', mostlyEvening: 'Głównie wieczorem', mostlyNight: 'Głównie w nocy',
 		takeBreak: 'Zrób przerwę', breakLead: 'Wybierz długość. Możesz ją skończyć wcześniej w każdej chwili, a sesje nadal da się zapisywać.',

@@ -4,16 +4,20 @@
 	import StatTile from '#lib/ds/StatTile.svelte';
 	import { listSessions } from '#lib/db.ts';
 	import { i18n, t, num, date, region } from '#lib/i18n.svelte.ts';
-	import { periodRange, startOfDay, totals, type Period, type Session } from '#lib/model.ts';
+	import { periodRange, previousSpan, startOfDay, totals, type Period, type Session } from '#lib/model.ts';
+	import { useNow } from '#lib/now.svelte.ts';
 
 	let sessions = $state<Session[]>([]);
 	let period = $state<Period>('week');
-	const now = Date.now();
+	const clock = useNow();
+	const now = $derived(clock.now);
 	onMount(async () => { sessions = await listSessions(); });
 
 	const range = $derived(periodRange(period, now, region()));
 	const cur = $derived(totals(sessions, range.start, range.end, now));
-	const prev = $derived(totals(sessions, range.prevStart, range.start, now));
+	// Same elapsed span of the previous period (Mon–Wed vs Mon–Wed), not the whole of it.
+	const prevSpan = $derived(previousSpan(period, now, region()));
+	const prev = $derived(totals(sessions, prevSpan.start, prevSpan.end, now));
 	const inRange = $derived(sessions.filter((s) => s.at >= range.start && s.at < range.end));
 
 	const overline = $derived.by(() => {

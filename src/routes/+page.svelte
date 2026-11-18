@@ -7,10 +7,12 @@
 	import { listSessions } from '#lib/db.ts';
 	import { date, i18n, num, region, t, time } from '#lib/i18n.svelte.ts';
 	import { dailyGrams, periodRange, startOfDay, totals, type Session } from '#lib/model.ts';
+	import { useNow } from '#lib/now.svelte.ts';
 	import SessionList from './log/SessionList.svelte';
 
 	let sessions = $state<Session[] | null>(null);
-	const now = Date.now();
+	const clock = useNow();
+	const now = $derived(clock.now);
 	onMount(async () => { sessions = await listSessions(); });
 
 	const week = $derived.by(() => {

@@ -139,6 +139,15 @@ export function periodRange(period: Period, now: number, locale = 'en'): { start
 	};
 }
 
+/** [start, end) of the previous period up to the same point: as many whole days as have begun in the current
+ *  period (today included), clamped to the previous period's length. DST-safe: calendar days, not 24h steps. */
+export function previousSpan(period: Period, now: number, locale = 'en'): { start: number; end: number } {
+	const r = periodRange(period, now, locale);
+	const p = new Date(r.prevStart);
+	const end = new Date(p.getFullYear(), p.getMonth(), p.getDate() + daysBetween(r.start, now) + 1).getTime();
+	return { start: r.prevStart, end: Math.min(end, r.start) };
+}
+
 export interface Totals {
 	grams: number;
 	edibleMg: number;

@@ -34,6 +34,7 @@
 	let nameError = $state(false);
 	let confirmDiscard = $state(false);
 	let saving = $state(false);
+	let failed = $state(false); // the write threw: say so, keep the form
 
 	if (editId)
 		getStrain(editId).then((s) => {
@@ -101,7 +102,14 @@
 			terpenes: [...terpenes],
 			photo
 		};
-		await putStrain(strain);
+		try {
+			await putStrain(strain);
+		} catch {
+			failed = true;
+			return;
+		} finally {
+			saving = false;
+		}
 		if (fromLog) goto(resolve('/log/new') + '?strain=' + encodeURIComponent(strain.id));
 		else goto(resolve('/strains/[id]', { id: strain.id }));
 	}
@@ -124,6 +132,7 @@
 	{/if}
 
 	<main>
+		{#if failed}<Notice tone="danger">{t('errors.saveFailed')}</Notice>{/if}
 		{#if confirmDiscard}
 			<div class="lh-confirm" role="alert">
 				<p class="confirm-title">{t('discardStrain')}</p>
