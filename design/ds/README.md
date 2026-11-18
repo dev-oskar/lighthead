@@ -85,5 +85,6 @@ Lesson-style: one question per screen, the content in the middle, one big button
 ## Layout
 
 - Phone first, one column, max content width 520px centred on larger screens.
-- The `TabBar` is fixed at the bottom with five destinations: Today, Log, Strains, Stats, Break. The primary action on Today is the floating log button above it.
+- The `TabBar` is fixed at the bottom with five destinations: Today, Journal, Strains, Stats, Break. The primary action on Today is the floating log button above it.
+- From 960px wide, a side rail on the left replaces the `TabBar`: the name, the log button, the five destinations, and Settings at the bottom. Content then uses two to four columns instead of one.
 - A screen reads top to bottom: title, the one figure that matters (break ring or this week's stat), then lists.

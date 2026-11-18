@@ -1,6 +1,6 @@
 # TabBar
 
-Bottom navigation with five destinations: Today, Log, Strains, Stats, Break.
+Bottom navigation with five destinations: Today, Journal, Strains, Stats, Break.
 
 - Props: `items` `[{value, label, icon}]` (defaults to the five above), `value` + `onChange` or `defaultValue`.
 - Fixed to the bottom of the screen; it adds the safe-area inset itself.

@@ -46,7 +46,9 @@ The end-to-end suite includes an offline test that asserts the app never contact
 
 ## Deploy
 
-Live at https://lighthead.thematrixadmin.workers.dev. Cloudflare Workers serves `build/` as static assets (`wrangler.jsonc`: SPA fallback). Headers (no-cache service worker, strict Content-Security-Policy) are in `static/_headers`, which Netlify also reads (`netlify.toml`, the old host at https://light-head.netlify.app/).
+Live at https://lighthead.thematrixadmin.workers.dev. Cloudflare Workers serves `build/` as static assets (`wrangler.jsonc`: SPA fallback). Every push to `master` deploys. Headers (no-cache service worker, strict Content-Security-Policy) are in `static/_headers`.
+
+Updates: a new version waits until the person taps Reload on the in-app notice (or the app restarts); Settings shows the build time as the version.
 
 ## Licences
 

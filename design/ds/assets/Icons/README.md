@@ -3,7 +3,7 @@
 LightHead's own line set: 24px grid, 1.75 stroke, round caps and joins. The files are drawn in `ink` (light theme, #18231c); in the app use the `Icon` component, which draws the same paths in `currentColor`.
 
 - `home.svg` — Today tab
-- `session.svg` — a session; Log tab
+- `session.svg` — a session; Journal tab
 - `leaf.svg` — strains; Strains tab; rating (filled)
 - `break.svg` — tolerance break; Break tab
 - `stash.svg` — the stash jar

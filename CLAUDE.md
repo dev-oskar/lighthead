@@ -4,6 +4,7 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 
 ## Commands
 - `npm run check` (svelte-check), `npx vitest run` (unit), `npx playwright test --workers=1` (e2e; builds + serves on :4173 itself).
+- E2E tests import `test` from `e2e/fixtures.ts`, which marks onboarding as done; only `e2e/onboarding.e2e.ts` uses the plain Playwright `test` for a first run.
 - Don't leave a `vite preview` running on :4173 while Playwright runs: its rebuild replaces `build/` and kills that server. To stop a preview server use `pkill -f "[v]ite preview"` (the `[v]` keeps pkill from matching its own shell).
 
 ## SvelteKit 3 specifics
@@ -12,6 +13,10 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 - Service worker imports: `self` from `$app/service-worker`, `version` from `$app/env`, `immutable`/`assets` from `$app/manifest`.
 - `paths.relative: false` is required: the service worker serves one cached shell for every route.
 - Cache lookups use `ignoreVary: true` (hosts send `Vary: Origin`; module scripts carry an Origin header).
+- The service worker must not `skipWaiting()` on install: a new version waits for the Reload notice (`src/lib/update.svelte.ts`). Playwright can't intercept the worker's update check, so test that flow by hand with two builds served from a swapped folder.
+
+## Deploy
+- Cloudflare Workers, static assets only (`wrangler.jsonc`); every push to `master` deploys to https://lighthead.thematrixadmin.workers.dev. Headers live in `static/_headers` (the service worker skips that file when precaching).
 
 ## Product rules (from the design system brand book, `design/ds/README.md`)
 - Data never leaves the device. No third-party requests of any kind (fonts, CDNs, analytics). `e2e/offline.e2e.ts` enforces it.
@@ -30,4 +35,5 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 
 ## Design sources (Claude artifacts)
 - Design system: https://claude.ai/artifact/2ikdrdQJtZLz1NDPDyNiEe
-- Screens canvas: https://claude.ai/artifact/QwutoUANdUbW73tisBDpYS — new screens are designed there first, then copied to `design/screens/`.
+- Screens canvas: https://claude.ai/artifact/QwutoUANdUbW73tisBDpYS — new screens are designed there first, then copied to `design/screens/`. Re-read the live `project/canvas.json` before publishing it (the owner edits the canvas too).
+- The canvas has its own copy of the design-system bundle (`project/ds/lighthead/components/bundle.js`); when the design system changes, update the artifact, the canvas copy and `design/ds/` together.

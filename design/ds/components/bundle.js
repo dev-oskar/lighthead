@@ -30,7 +30,7 @@
       indica: 'Indica', sativa: 'Sativa', hybrid: 'Hybrid', cbd: 'CBD', thc: 'THC', sessions: 'Sessions',
       breakLabel: 'Tolerance break', breakDone: 'Break complete', ofTotal: 'of {total}',
       daysToGo: { one: '{count} day to go', other: '{count} days to go' },
-      mainNav: 'Main', today: 'Today', log: 'Log', strains: 'Strains', stats: 'Stats', 'break': 'Break',
+      mainNav: 'Main', today: 'Today', log: 'Journal', strains: 'Strains', stats: 'Stats', 'break': 'Break',
       amount: 'Amount', method: 'Method', strain: 'Strain', effects: 'Effects', now: 'Now',
       joint: 'Joint', vape: 'Vape', bong: 'Bong', edible: 'Edible', somethingElse: 'Something else',
       calm: 'Calm', happy: 'Happy', creative: 'Creative', focused: 'Focused', sleepy: 'Sleepy', hungry: 'Hungry',
