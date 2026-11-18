@@ -46,7 +46,7 @@ The end-to-end suite includes an offline test that asserts the app never contact
 
 ## Deploy
 
-Live at https://light-head.netlify.app/. Netlify builds with `npm run build` and publishes `build/` (see `netlify.toml`: SPA fallback, no-cache for the service worker, strict Content-Security-Policy).
+Cloudflare Workers serves `build/` as static assets (`wrangler.jsonc`: SPA fallback). Headers (no-cache service worker, strict Content-Security-Policy) are in `static/_headers`, which Netlify also reads (`netlify.toml`, the old host at https://light-head.netlify.app/).
 
 ## Licences
 
