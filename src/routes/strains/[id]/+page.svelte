@@ -10,6 +10,7 @@
 	import SessionCard from '#lib/ds/SessionCard.svelte';
 	import StrainAvatar from '#lib/ds/StrainAvatar.svelte';
 	import StrainBadge from '#lib/ds/StrainBadge.svelte';
+	import TextField from '#lib/ds/TextField.svelte';
 	import { deleteStrain, getStrain, putStrain, sessionsForStrain } from '#lib/db.ts';
 	import type { Session, Strain } from '#lib/model.ts';
 	import { prepareStrainPhoto } from '#lib/photo.ts';
@@ -21,6 +22,7 @@
 	let sessions = $state.raw<Session[]>([]);
 	let loaded = $state(false);
 	let stashDraft = $state<number | null>(null); // non-null while editing the stash
+	let noteDraft = $state<string | null>(null); // non-null while editing the note
 	let confirmDelete = $state(false);
 	let failed = $state(false); // a write threw: say so, keep what was typed
 
@@ -56,6 +58,11 @@
 	async function saveStash() {
 		if (!strain || stashDraft == null) return;
 		if (await save({ ...strain, stashG: stashDraft })) stashDraft = null;
+	}
+
+	async function saveNote() {
+		if (!strain || noteDraft == null) return;
+		if (await save({ ...strain, note: noteDraft.trim() || undefined })) noteDraft = null;
 	}
 
 	async function remove() {
@@ -129,6 +136,23 @@
 					{/if}
 				</section>
 
+				<section class="note">
+					{#if noteDraft != null}
+						<TextField label={t('note')} hint={t('noteHint')} placeholder={t('strainNotePh')} multiline bind:value={noteDraft} />
+						<div class="lh-confirm-row">
+							<Button variant="primary" onclick={saveNote}>{t('save')}</Button>
+							<Button variant="quiet" onclick={() => (noteDraft = null)}>{t('cancel')}</Button>
+						</div>
+					{:else if strain.note}
+						<div class="note-head">
+							<h2 class="lh-overline">{t('note')}</h2>
+							<Button variant="quiet" aria-label={t('editNote')} onclick={() => (noteDraft = strain?.note ?? '')}>{t('edit')}</Button>
+						</div>
+						<p class="note-text">{strain.note}</p>
+					{:else}
+						<div><Button variant="secondary" onclick={() => (noteDraft = '')}>{t('addNote')}</Button></div>
+					{/if}
+				</section>
 			</div>
 			<section class="lh-section">
 				<h2 class="lh-overline">{t('yourSessions')}</h2>
@@ -183,6 +207,9 @@
 	.stash-text { flex: 1; display: flex; flex-direction: column; }
 	.stash-label { font-size: 14px; line-height: 18px; font-weight: 600; }
 	.stash-edit { flex: 1; display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-1) 0; }
+	.note { display: flex; flex-direction: column; gap: var(--space-3); }
+	.note-head { display: flex; align-items: center; justify-content: space-between; margin-right: calc(-1 * var(--space-3)); }
+	.note-text { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 	h2.lh-overline { margin: 0; }
 	.confirm-text { margin: 0; color: var(--ink); }
 	/* Phone: one column, as if the wrappers were not there. Desktop: panel + stash left, sessions right. */

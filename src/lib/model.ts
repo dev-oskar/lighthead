@@ -21,6 +21,7 @@ export interface Strain {
 	terpenes: string[];
 	photo?: Blob; // from prepareStrainPhoto
 	rating?: number; // 1–5
+	note?: string; // the user's own opinion
 	stashG?: number;
 	createdAt: number;
 	updatedAt: number;
