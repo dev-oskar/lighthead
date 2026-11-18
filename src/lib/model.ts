@@ -61,6 +61,8 @@ export interface Settings {
 	lastStrainId?: string;
 	lastMethod?: Method;
 	lastTempC?: number;
+	/** Display and input unit for vape temperature; storage is always °C. Unset: by region (defaultTempUnit). */
+	tempUnit?: TempUnit;
 	amountByStrain: Record<string, { amount: number; unit: Unit; tempC?: number }>;
 	/** First-run onboarding was finished or skipped. */
 	onboarded?: boolean;
@@ -69,6 +71,19 @@ export interface Settings {
 export const DEFAULT_SETTINGS: Settings = { theme: 'system', amountByStrain: {} };
 
 export const DEFAULT_TEMP_C = 190;
+
+export type TempUnit = 'C' | 'F';
+/** °F where the formatting region is the US (en-US), °C everywhere else, including a bare "en". */
+export function defaultTempUnit(locale: string): TempUnit {
+	try {
+		return new Intl.Locale(locale).region === 'US' ? 'F' : 'C';
+	} catch {
+		return 'C';
+	}
+}
+// Stored values are never rounded; the 1e-9 trim only hides float noise so °F → °C → °F gives back the same number.
+export const cToF = (c: number) => +(c * 1.8 + 32).toFixed(9);
+export const fToC = (f: number) => (f - 32) / 1.8;
 
 export const unitFor = (m: Method): Unit => (m === 'edible' ? 'mg' : 'g');
 
@@ -191,6 +206,27 @@ export function totals(sessions: Session[], start: number, end: number, now = Da
 		mgThc: Math.round(mg),
 		daysClear,
 		byStrain: [...by].map(([name, g]) => ({ name, grams: +g.toFixed(2) })).sort((a, b) => b.grams - a.grams)
+	};
+}
+
+const median = (xs: number[]) => {
+	const s = [...xs].sort((a, b) => a - b), m = s.length >> 1;
+	return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+};
+
+/** Vape temperatures (°C) over [start, end): median, range, and median per strain (most sessions first). */
+export function vapeTemps(sessions: Session[], start: number, end: number) {
+	const by = new Map<string, number[]>();
+	for (const s of sessions)
+		if (s.at >= start && s.at < end && s.method === 'vape' && s.tempC != null) by.set(s.strainName, [...(by.get(s.strainName) ?? []), s.tempC]);
+	const all = [...by.values()].flat();
+	if (!all.length) return undefined;
+	return {
+		count: all.length,
+		median: median(all),
+		min: Math.min(...all),
+		max: Math.max(...all),
+		byStrain: [...by].map(([name, ts]) => ({ name, median: median(ts), count: ts.length })).sort((a, b) => b.count - a.count)
 	};
 }
 

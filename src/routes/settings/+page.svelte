@@ -10,7 +10,8 @@
 	import { app, loadSettings, updateSettings } from '#lib/app-state.svelte.ts';
 	import { version } from '$app/env';
 	import { i18n, t, num, date, time, type Locale } from '#lib/i18n.svelte.ts';
-	import type { Settings } from '#lib/model.ts';
+	import type { Settings, TempUnit } from '#lib/model.ts';
+	import { tempUnit } from '../log/format.ts';
 
 	// Language names are endonyms: never translated.
 	const LANGS = [{ value: 'en', label: 'English' }, { value: 'de', label: 'Deutsch' }, { value: 'pl', label: 'Polski' }];
@@ -103,6 +104,16 @@
 			value={app.settings.theme}
 			options={[{ value: 'system', label: t('themeSystem') }, { value: 'light', label: t('themeLight') }, { value: 'dark', label: t('themeDark') }]}
 			onChange={(v) => set({ theme: v as Settings['theme'] })}
+		/>
+	</section>
+
+	<section class="lh-section tight">
+		<h2 class="lh-overline">{t('units.title')}</h2>
+		<SegmentedControl
+			label={t('units.temperature')}
+			value={tempUnit()}
+			options={[{ value: 'C', label: '°C' }, { value: 'F', label: '°F' }]}
+			onChange={(v) => set({ tempUnit: v as TempUnit })}
 		/>
 	</section>
 

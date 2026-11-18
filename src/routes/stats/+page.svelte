@@ -4,8 +4,9 @@
 	import StatTile from '#lib/ds/StatTile.svelte';
 	import { listSessions } from '#lib/db.ts';
 	import { i18n, t, num, date, region } from '#lib/i18n.svelte.ts';
-	import { periodRange, previousSpan, startOfDay, totals, type Period, type Session } from '#lib/model.ts';
+	import { periodRange, previousSpan, startOfDay, totals, vapeTemps, type Period, type Session } from '#lib/model.ts';
 	import { useNow } from '#lib/now.svelte.ts';
+	import { tempNum, tempSymbol, tempText } from '../log/format.ts';
 
 	let sessions = $state<Session[]>([]);
 	let period = $state<Period>('week');
@@ -60,6 +61,11 @@
 		return top[1] ? t('mostly' + top[0]) : undefined;
 	});
 
+	const temps = $derived(vapeTemps(sessions, range.start, range.end));
+	const tempNote = $derived(
+		temps && [tempNum(temps.min) !== tempNum(temps.max) ? tempNum(temps.min) + '–' + tempText(temps.max) : '', t('units.nSessions', { count: temps.count })].filter(Boolean).join(' · ')
+	);
+
 	const maxStrain = $derived(cur.byStrain[0]?.grams || 1);
 </script>
 
@@ -97,6 +103,20 @@
 				{/each}
 			</section>
 		{/if}
+		{#if temps}
+			<section class="temp">
+				<StatTile label={t('units.vapeTemp')} value={tempNum(temps.median)} unit={tempSymbol()} note={tempNote} />
+				<section class="lh-card bars">
+					<h2 class="lh-overline">{t('units.vapeTempByStrain')}</h2>
+					{#each temps.byStrain as s (s.name)}
+						<div class="bar-head">
+							<span class="bar-name">{s.name}</span>
+							<span class="lh-data">{tempText(s.median)} <span class="count">· {t('units.nSessions', { count: s.count })}</span></span>
+						</div>
+					{/each}
+				</section>
+			</section>
+		{/if}
 	{/if}
 </main>
 
@@ -110,6 +130,10 @@
 	.bar-head { display: flex; justify-content: space-between; gap: var(--space-2); }
 	.bar-name { font-size: 14px; line-height: 20px; font-weight: 600; }
 	.bar-head .lh-data { font-size: 14px; }
+	/* Own section, not a 5th tile: on desktop the tile sits in the first column of the 4-column tile grid above. */
+	.temp { display: grid; gap: var(--space-3); }
+	@media (min-width: 960px) { .temp { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); } .temp .bars { grid-column: span 3; } }
+	.count { color: var(--ink-muted); }
 	.bar-track { height: 8px; border-radius: var(--radius-full); background: var(--surface-sunk); }
 	.bar-fill { height: 8px; border-radius: var(--radius-full); background: var(--moss); }
 </style>

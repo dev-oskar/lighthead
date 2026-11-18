@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
-	applyStash, breakEnd, breakProgress, clamp, dailyGrams, DEFAULT_SETTINGS, groupByDay, mgThc, nudge, periodRange, prefill, previousSpan, snapshot, totals,
+	applyStash, breakEnd, cToF, defaultTempUnit, fToC, vapeTemps, breakProgress, clamp, dailyGrams, DEFAULT_SETTINGS, groupByDay, mgThc, nudge, periodRange, prefill, previousSpan, snapshot, totals,
 	type Session, type Strain
 } from './model.ts';
 import { initials } from './photo.ts';
@@ -123,5 +123,37 @@ describe('design-system helpers', () => {
 		expect(translate('pl', 'daysToGo', { count: 1 })).toBe('Został 1 dzień');
 		expect(translate('pl', 'daysToGo', { count: 2 })).toBe('Zostały 2 dni');
 		expect(translate('pl', 'daysToGo', { count: 5 })).toBe('Zostało 5 dni');
+	});
+});
+
+describe('temperature units', () => {
+	it('defaults to °F only for a US region', () => {
+		expect(defaultTempUnit('en-US')).toBe('F');
+		for (const l of ['en', 'en-GB', 'de-DE', 'pl', 'not a locale!']) expect(defaultTempUnit(l)).toBe('C');
+	});
+	it('converts both ways', () => {
+		expect(cToF(190)).toBe(374);
+		expect(fToC(392)).toBe(200);
+	});
+	it('round-trips °F → °C → °F exactly over the whole input range', () => {
+		for (let f = 212; f <= 482; f++) expect(cToF(fToC(f))).toBe(f);
+	});
+});
+
+describe('vapeTemps', () => {
+	const day = at(2026, 3, 10);
+	it('is undefined without vape temperatures in range', () => {
+		expect(vapeTemps([sess({ at: day }), sess({ at: day, method: 'joint', tempC: 190 })], day - 1, day + 1)).toBeUndefined();
+	});
+	it('gives median, range and per-strain medians, most sessions first', () => {
+		const list = [
+			sess({ at: day, tempC: 180 }), sess({ at: day, tempC: 200 }), sess({ at: day, tempC: 190 }),
+			sess({ at: day, tempC: 210, strainName: 'Lemon Haze' }), sess({ at: day, tempC: 200, strainName: 'Lemon Haze' }),
+			sess({ at: day + 10, tempC: 250 }) // out of range
+		];
+		expect(vapeTemps(list, day - 1, day + 1)).toEqual({
+			count: 5, median: 200, min: 180, max: 210,
+			byStrain: [{ name: 'Northern Lights', median: 190, count: 3 }, { name: 'Lemon Haze', median: 205, count: 2 }]
+		});
 	});
 });

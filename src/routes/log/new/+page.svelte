@@ -19,10 +19,10 @@
 	import { deleteSession, getSession, listBreaks, listSessions, listStrains, putBreak, saveSession } from '#lib/db.ts';
 	import { date, num, pct, t, time } from '#lib/i18n.svelte.ts';
 	import {
-		DEFAULT_TEMP_C, EFFECTS, METHODS, SETTINGS_PLACES, activeBreak, breakProgress, mgThc, prefill, snapshot, uid, unitFor,
+		DEFAULT_TEMP_C, EFFECTS, cToF, fToC, METHODS, SETTINGS_PLACES, activeBreak, breakProgress, mgThc, prefill, snapshot, uid, unitFor,
 		type Break, type Method, type Session, type Strain, type StrainType, type Unit
 	} from '#lib/model.ts';
-	import { amountText, methodText } from '../format.ts';
+	import { amountText, methodText, tempUnit } from '../format.ts';
 
 	type StepN = 1 | 2 | 3 | 4; // 4 = saved
 	const SNAP = '__snapshot'; // an edited session whose strain was deleted keeps its snapshot
@@ -320,7 +320,11 @@
 							</p>
 						{/if}
 						{#if method === 'vape'}
-							<NumberField bind:value={tempC} label={t('log.temperature')} unit="°C" step={5} min={100} max={250} prefilled={tempPrefilled} />
+							{#if tempUnit() === 'F'}
+								<NumberField bind:value={() => cToF(tempC), (f) => (tempC = fToC(f))} label={t('log.temperature')} unit="°F" step={10} min={212} max={482} prefilled={tempPrefilled} />
+							{:else}
+								<NumberField bind:value={tempC} label={t('log.temperature')} unit="°C" step={5} min={100} max={250} prefilled={tempPrefilled} />
+							{/if}
 						{/if}
 					{:else if step === 3}
 						<StepHeader step={3} total={3} title={t('qFeel')} subtitle={t('optionalSub')} closeLabel={t('back')} onClose={close} />
