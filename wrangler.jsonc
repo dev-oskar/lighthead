@@ -1,0 +1,9 @@
+// Cloudflare Workers: static assets only, no server code. Headers live in static/_headers.
+{
+	"name": "lighthead",
+	"compatibility_date": "2026-11-17",
+	"assets": {
+		"directory": "./build",
+		"not_found_handling": "single-page-application"
+	}
+}

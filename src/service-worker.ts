@@ -10,7 +10,8 @@ import { immutable, assets } from '$app/manifest';
 const CACHE = `lighthead-${version}`;
 const SHELL = ''; // the scope root serves the SPA shell (adapter-static fallback) on every host
 const url = (p: string) => new URL(p, self.registration.scope).href;
-const FILES = [...immutable, ...assets].map((f) => url(f.path)).concat(url(SHELL));
+// _headers is host config, never served
+const FILES = [...immutable, ...assets.filter((f) => f.path !== '_headers')].map((f) => url(f.path)).concat(url(SHELL));
 
 self.addEventListener('install', (e) => {
 	e.waitUntil(caches.open(CACHE).then((c) => c.addAll(FILES)).then(() => self.skipWaiting()));
