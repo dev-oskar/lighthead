@@ -1,54 +1,53 @@
-# sv
+# LightHead
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A private journal for cannabis use: log sessions, keep a strain library, plan tolerance breaks and see simple statistics. It is an offline-first PWA and everything stays on the device — no accounts, no analytics, no requests to other sites.
 
-## Creating a project
+## Run it
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
+Needs Node 22+.
 
 ```sh
-# recreate this project
-npx sv@1.4.0 create --template minimal --types ts --add vitest="usages:unit" playwright="demo:no" sveltekit-adapter="adapter:static" --no-install scaffold
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # static site in build/
+npm run preview    # serve the build (with the service worker) on :4173
 ```
 
-## Adding features
-
-Add features to your project with `sv add`:
+## Check it
 
 ```sh
-npx sv add
+npm run check            # svelte-check (types)
+npx vitest run           # unit tests for src/lib/model.ts and i18n
+npx playwright install chromium   # once
+npx playwright test      # end-to-end, builds and serves the app itself
 ```
 
-For example, to add Tailwind CSS:
+The end-to-end suite includes an offline test that asserts the app never contacts another origin and keeps working with the server unreachable.
 
-```sh
-npx sv add tailwindcss
-```
+## Stack
 
-## Developing
+- Svelte 5 (runes) + SvelteKit 3, `adapter-static`, client-only SPA (`ssr = false`)
+- IndexedDB through [`idb`](https://github.com/jakearchibald/idb)
+- SvelteKit's built-in service worker (`src/service-worker.ts`) precaches the whole app
+- No UI framework or chart library: components are a Svelte port of the LightHead design system, charts are inline SVG
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Layout
 
-```sh
-npm run dev
+| Path | What |
+| --- | --- |
+| `src/lib/ds/` | Design-system components (Svelte port, same class names as the original) |
+| `src/lib/styles/` | `tokens.css` (colours, type, spacing), `components.css` (design-system CSS, verbatim), `app.css` (app shell, desktop layout) |
+| `src/lib/model.ts` | Types and pure logic (derived THC, snapshots, stash, periods, breaks) — unit-tested |
+| `src/lib/db.ts` | IndexedDB access, backup export/import |
+| `src/lib/i18n.svelte.ts`, `src/lib/messages/` | en/de/pl; every `messages/*.ts` is merged automatically |
+| `src/routes/` | Screens: Today, Journal (`log`), quick log (`log/new`), Strains, Stats, Break, Settings |
+| `design/` | Reference copies of the design system and screen mockups (from the Claude design artifacts) |
+| `e2e/` | Playwright tests |
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Deploy
 
-## Building
+Netlify builds with `npm run build` and publishes `build/` (see `netlify.toml`: SPA fallback, no-cache for the service worker, strict Content-Security-Policy).
 
-To create a production version of your app:
+## Licences
 
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
+Fonts (Atkinson Hyperlegible Next/Mono, Bricolage Grotesque) are under the SIL Open Font License 1.1, shipped in `static/licenses/fonts-OFL.txt`.
