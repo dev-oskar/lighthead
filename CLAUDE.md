@@ -34,7 +34,7 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 - Desktop (>= 960px) uses the side rail (`src/routes/NavRail.svelte`); phones use `TabBar`. Phone layout must not change when editing desktop styles.
 
 ## Backlog
-- GitHub Issues on dev-oskar/lighthead (public repo, AGPL-3.0-or-later). Use `gh`; reference issues in commits ("Fixes #n"). Keep business details out of public issues.
+- GitHub Issues on dev-oskar/lighthead (public repo, AGPL-3.0-or-later), on the private board https://github.com/users/dev-oskar/projects/7 (project 7; move items with `gh project item-edit`). Use `gh`; reference issues in commits ("Fixes #n"). Keep business details out of public issues.
 
 ## Design sources (Claude artifacts)
 - Design system: https://claude.ai/artifact/2ikdrdQJtZLz1NDPDyNiEe
