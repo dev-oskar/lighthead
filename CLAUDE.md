@@ -33,6 +33,9 @@ Private, offline-first cannabis journal PWA. Svelte 5 + SvelteKit 3, static SPA,
 - Store plain objects in IndexedDB (`$state.snapshot` / spread), never Svelte proxies.
 - Desktop (>= 960px) uses the side rail (`src/routes/NavRail.svelte`); phones use `TabBar`. Phone layout must not change when editing desktop styles.
 
+## Backlog
+- GitHub Issues on dev-oskar/lighthead (public repo, AGPL-3.0-or-later). Use `gh`; reference issues in commits ("Fixes #n"). Keep business details out of public issues.
+
 ## Design sources (Claude artifacts)
 - Design system: https://claude.ai/artifact/2ikdrdQJtZLz1NDPDyNiEe
 - Screens canvas: https://claude.ai/artifact/QwutoUANdUbW73tisBDpYS — new screens are designed there first, then copied to `design/screens/`. Re-read the live `project/canvas.json` before publishing it (the owner edits the canvas too).
