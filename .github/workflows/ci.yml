@@ -1,0 +1,41 @@
+# Runs on every change: types, unit tests, end-to-end tests (including the offline test that fails if the app
+# contacts any other site) and the landing page build. Cloudflare deploys independently; a red run here means
+# the live site needs a look.
+name: Checks
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npx vitest run
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --workers=1
+      - run: npm run landing:build
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
