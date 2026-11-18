@@ -40,7 +40,8 @@
 			await loadSettings();
 			if (!app.settings.onboarded) {
 				if (await hasData()) updateSettings({ onboarded: true }).catch(() => {});
-				else if (page.url.pathname !== resolve('/welcome')) await goto(resolve('/welcome'), { replaceState: true });
+				// Pages the landing page links to open directly; onboarding waits for the app itself.
+				else if (!([resolve('/welcome'), resolve('/privacy'), resolve('/help')] as string[]).includes(page.url.pathname)) await goto(resolve('/welcome'), { replaceState: true });
 			}
 		} finally {
 			checked = true; // storage unavailable: still render the app rather than a blank screen

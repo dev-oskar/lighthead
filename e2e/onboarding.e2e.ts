@@ -38,6 +38,15 @@ test('first launch shows onboarding once', async ({ page }) => {
 	await expect(page).toHaveURL(/\/$/);
 });
 
+test('privacy and help open directly from the landing page, onboarding comes with the app', async ({ page }) => {
+	await page.goto('/privacy');
+	await expect(page.getByRole('heading', { level: 1, name: 'How your data is kept' })).toBeVisible();
+	await page.goto('/help');
+	await expect(page).toHaveURL(/\/help$/);
+	await page.goto('/');
+	await expect(page).toHaveURL(/\/welcome$/);
+});
+
 test('language picked during onboarding is kept', async ({ page }) => {
 	await page.goto('/');
 	await page.getByRole('radio', { name: 'Deutsch' }).click();
