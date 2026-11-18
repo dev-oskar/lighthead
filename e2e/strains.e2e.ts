@@ -59,6 +59,7 @@ test('create, update stash and edit a strain', async ({ page }) => {
 	await page.getByRole('button', { name: 'Add a note' }).click();
 	await page.getByLabel('Note').fill('Bright, peppery.\nGood for walks.');
 	await page.getByRole('button', { name: 'Save', exact: true }).click();
+	await expect(page.getByRole('button', { name: 'Edit note' })).toBeVisible(); // saved
 	await page.reload();
 	await expect(page.getByText('Good for walks.')).toBeVisible();
 	await page.getByRole('button', { name: 'Edit note' }).click();

@@ -1,9 +1,19 @@
 import type { Messages } from '../i18n.svelte.ts';
 
 // First-run onboarding (/welcome): welcome + language, home-screen install, first strain.
+// mac1/mac2: Safari's own menu names on macOS (File > Add to Dock).
 // install1/install2 wrap a bold UI label ({b}), which is the browser's own wording in that language.
 export const messages: Record<string, Messages> = {
 	en: {
+		'onboarding.languageTitle': 'Which language?',
+		'onboarding.languageSub': 'You can change it any time in Settings.',
+		'onboarding.installTitleDesktop': 'Install it on this computer',
+		'onboarding.installSubDesktop': 'LightHead opens in its own window and your browser keeps your data.',
+		'onboarding.mac1': 'In the menu bar, choose {b}',
+		'onboarding.mac1b': 'File',
+		'onboarding.mac2': 'Choose {b}',
+		'onboarding.mac2b': 'Add to Dock',
+		'onboarding.mac3': 'Open LightHead from the Dock',
 		'onboarding.tagline': 'A quiet journal for your sessions, strains and breaks.',
 		'onboarding.privateBody': 'No account, no tracking. Nothing you log is sent anywhere.',
 		'onboarding.installTitle': 'Keep it on your home screen',
@@ -25,6 +35,15 @@ export const messages: Record<string, Messages> = {
 		'onboarding.later': 'Later'
 	},
 	de: {
+		'onboarding.languageTitle': 'Welche Sprache?',
+		'onboarding.languageSub': 'Du kannst sie jederzeit in den Einstellungen ändern.',
+		'onboarding.installTitleDesktop': 'Installiere es auf diesem Computer',
+		'onboarding.installSubDesktop': 'LightHead öffnet sich in einem eigenen Fenster, und dein Browser behält deine Daten.',
+		'onboarding.mac1': 'Wähle in der Menüleiste {b}',
+		'onboarding.mac1b': 'Ablage',
+		'onboarding.mac2': 'Wähle {b}',
+		'onboarding.mac2b': 'Zum Dock hinzufügen',
+		'onboarding.mac3': 'Öffne LightHead über das Dock',
 		'onboarding.tagline': 'Ein ruhiges Tagebuch für deine Sitzungen, Sorten und Pausen.',
 		'onboarding.privateBody': 'Kein Konto, kein Tracking. Nichts, was du einträgst, wird irgendwohin gesendet.',
 		'onboarding.installTitle': 'Leg es auf deinen Home-Bildschirm',
@@ -46,6 +65,15 @@ export const messages: Record<string, Messages> = {
 		'onboarding.later': 'Später'
 	},
 	pl: {
+		'onboarding.languageTitle': 'Który język?',
+		'onboarding.languageSub': 'Możesz go zmienić w każdej chwili w Ustawieniach.',
+		'onboarding.installTitleDesktop': 'Zainstaluj go na tym komputerze',
+		'onboarding.installSubDesktop': 'LightHead otwiera się we własnym oknie, a przeglądarka zachowuje twoje dane.',
+		'onboarding.mac1': 'Na pasku menu wybierz {b}',
+		'onboarding.mac1b': 'Plik',
+		'onboarding.mac2': 'Wybierz {b}',
+		'onboarding.mac2b': 'Dodaj do Docka',
+		'onboarding.mac3': 'Otwórz LightHead z Docka',
 		'onboarding.tagline': 'Spokojny dziennik twoich sesji, odmian i przerw.',
 		'onboarding.privateBody': 'Bez konta, bez śledzenia. Nic, co zapisujesz, nie jest nigdzie wysyłane.',
 		'onboarding.installTitle': 'Dodaj go do ekranu początkowego',

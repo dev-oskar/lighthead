@@ -156,6 +156,48 @@
       "w": 390,
       "h": 844,
       "title": "Log during a break"
+    },
+    "Onboarding-1-Welcome.dc.html": {
+      "x": 0,
+      "y": 5876,
+      "w": 390,
+      "h": 844,
+      "title": "Onboarding 1 · Welcome"
+    },
+    "Onboarding-2-Install.dc.html": {
+      "x": 470,
+      "y": 5876,
+      "w": 390,
+      "h": 844,
+      "title": "Onboarding 2 · Home screen"
+    },
+    "Onboarding-3-Strain.dc.html": {
+      "x": 940,
+      "y": 5876,
+      "w": 390,
+      "h": 844,
+      "title": "Onboarding 3 · First strain"
+    },
+    "Onboarding-Desktop-1-Welcome.dc.html": {
+      "x": 0,
+      "y": 6960,
+      "w": 1280,
+      "h": 800,
+      "title": "Onboarding 1 · desktop"
+    },
+    "Onboarding-Desktop-2-Install.dc.html": {
+      "x": 1360,
+      "y": 6960,
+      "w": 1280,
+      "h": 800,
+      "title": "Onboarding 2 · install (Chrome, Edge)"
+    },
+    "Onboarding-Desktop-3-Strain.dc.html": {
+      "x": 2720,
+      "y": 6960,
+      "w": 1280,
+      "h": 800,
+      "title": "Onboarding 3 · desktop"
     }
   },
   "order": [
@@ -179,7 +221,13 @@
     "Import-Confirm.dc.html",
     "Today-Desktop.dc.html",
     "Strains-Desktop.dc.html",
-    "Log-Break-Ask.dc.html"
+    "Log-Break-Ask.dc.html",
+    "Onboarding-1-Welcome.dc.html",
+    "Onboarding-2-Install.dc.html",
+    "Onboarding-3-Strain.dc.html",
+    "Onboarding-Desktop-1-Welcome.dc.html",
+    "Onboarding-Desktop-2-Install.dc.html",
+    "Onboarding-Desktop-3-Strain.dc.html"
   ],
   "notes": {
     "row1": {
@@ -216,6 +264,20 @@
       "text": "v1.1: desktop and breaks",
       "kind": "title1",
       "maxW": 3110
+    },
+    "row6": {
+      "x": 0,
+      "y": 5576,
+      "text": "First run",
+      "kind": "title1",
+      "maxW": 1330
+    },
+    "row7": {
+      "x": 0,
+      "y": 6660,
+      "text": "First run on desktop",
+      "kind": "title1",
+      "maxW": 3920
     }
   },
   "designSystems": [
