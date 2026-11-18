@@ -1,5 +1,5 @@
 // Cloudflare Workers: the landing page, static assets only, no server code. Headers live in _headers (copied into dist).
-// Build first with `npm run landing:build`, then deploy from this folder.
+// Deployed by its own Cloudflare Worker build: `npm run landing:build`, then `npx wrangler deploy --config landing/wrangler.jsonc` from the repo root.
 {
 	"name": "lighthead-landing",
 	"compatibility_date": "2026-11-17",
@@ -9,7 +9,6 @@
 	},
 	// No *.workers.dev address and no preview URLs.
 	"workers_dev": false,
-	"preview_urls": false
-	// No routes yet. When switching over, add { "pattern": "lighthead.app", "custom_domain": true } here
-	// and remove lighthead.app from the app's routes in ../wrangler.jsonc.
+	"preview_urls": false,
+	"routes": [{ "pattern": "lighthead.app", "custom_domain": true }]
 }
